@@ -1,45 +1,45 @@
-Python Machine Learning - Code Examples
+Python機械学習 - コード例
 
 
-##  Chapter 1: Giving Computers the Ability to Learn from Data
+##  第1章: コンピュータにデータから学習する能力を与える
 
 
 ---
 
 
 
-## For Existing Conda Users: Creating a New Conda Environment (Optional)
+## 既存のCondaユーザー向け: 新しいConda環境の作成（オプション）
 
 
 
-If you are already a conda user, you can skip the next section and get all the recommended package versions in a fresh conda environment (called "pyml-book") via
+すでにcondaユーザーの場合は、次のセクションをスキップして、このリポジトリのメインフォルダから
 
 
 ```
 make -f Makefile
 ```
 
-from the main folder in this repository.
+を実行することで、新しいconda環境（"pyml-book"という名前）で推奨されるすべてのパッケージバージョンを取得できます。
 
 
 
-## Setting Up Your Python Environment (Manually)
+## Python環境の手動設定
 
-This chapter does not contain any code examples, but we recommend you to set up and check your Python before you proceed with the next chapters.
+この章にはコード例は含まれていませんが、次の章に進む前にPythonの設定と確認を行うことをお勧めします。
 
-For more detailed setup instructions, please refer to the section ***Installing Python and packages from the Python Package Index*** in Chapter 1.
+より詳細な設定手順については、第1章の***Python Package IndexからのPythonとパッケージのインストール***のセクションを参照してください。
 
 
 
 **Conda**
 
-If you are using conda (we recommend installing conda via [Miniforge](https://github.com/conda-forge/miniforge)), you can create a new environment as follows:
+condaを使用している場合（[Miniforge](https://github.com/conda-forge/miniforge)経由でのcondaインストールを推奨）、次のように新しい環境を作成できます:
 
 ```bash
 conda create -n "pyml-book" python=3.9 numpy=1.21.2 scipy=1.7.0 scikit-learn=1.0 matplotlib=3.4.3 pandas=1.3.2
 ```
 
-After creating this environment, you can activate it via
+この環境を作成した後、次のようにアクティベートできます:
 
 ```bash
 conda activate "pyml-book"
@@ -47,16 +47,16 @@ conda activate "pyml-book"
 
 
 
-**Pip and virtualenv**
+**PipとVirtualenv**
 
-If you prefer using `pip`, you can go ahead and install the required packages via
+`pip`を使用することを好む場合は、次のように必要なパッケージをインストールできます:
 
 ```bash
 pip install numpy==1.21.2 scipy==1.7.0 scikit-learn==1.0 matplotlib==3.4.3 pandas==1.3.2
 ```
 
-However, we additionally recommend creating a new virtual environment for this book. 
-You can create a new virtual environment with a specific Python version using [virtualenv](https://virtualenv.pypa.io/en/latest/) as follows:
+ただし、この書籍用に新しい仮想環境を作成することを追加で推奨します。
+[virtualenv](https://virtualenv.pypa.io/en/latest/)を使用して、特定のPythonバージョンで新しい仮想環境を作成できます:
 
 ```bash
 pip install virtualenv
@@ -65,7 +65,7 @@ virtualenv pyml-book
 source pyml-book/bin/activate 
 ```
 
-After activating your environment, you can install the required packages via
+環境をアクティベートした後、次のように必要なパッケージをインストールできます:
 
 ```bash
 pip install numpy==1.21.2 scipy==1.7.0 scikit-learn==1.0 matplotlib==3.4.3 pandas==1.3.2
@@ -77,15 +77,15 @@ pip install numpy==1.21.2 scipy==1.7.0 scikit-learn==1.0 matplotlib==3.4.3 panda
 
 
 
-## Checking Your Python Environment
+## Python環境の確認
 
-To verify that your Python environment is set up for the following chapters, we recommend running the [`../python_environment_check.py`](../python_environment_check.py) script provided in the main folder of this repository.
+以下の章に向けてPython環境が正しく設定されていることを確認するために、このリポジトリのメインフォルダにある[`../python_environment_check.py`](../python_environment_check.py)スクリプトを実行することをお勧めします。
 
-You can run the `python_environment_check.py` script via
+`python_environment_check.py`スクリプトは次のように実行できます:
 
     python python_environment_check.py
 
-Shown below is an example output:
+以下は出力例です:
 
 ```python
 (base) sebastian@MacBook-Air ~/Desktop/Python-Machine-Learning-PyTorch-Edition/ch01 % python ../python_environment_check.py
@@ -99,32 +99,31 @@ Shown below is an example output:
 ```
 
 
-## Jupyter Notebooks
+## Jupyter Notebook
 
-Some readers were wondering about the .ipynb of the code files contained in this repository -- these files are Jupyter notebooks (formerly known as IPython notebooks).
+このリポジトリに含まれるコードファイルの.ipynb拡張子について疑問に思った読者もいるでしょう -- これらはJupyter notebook（以前はIPython notebookと呼ばれていました）です。
 
-Compared to regular .py scripts, Jupyter notebooks allow us to have everything in one place:
+通常の.pyスクリプトと比較して、Jupyter notebookでは以下のすべてを一箇所にまとめることができます:
 
-- Our code.
-- The results from executing the code.
-- Plots of our data.
-- Documentation supporting the handy Markdown and LaTeX syntax for typing and rendering mathematical notation.
+- コード
+- コード実行結果
+- データのプロット
+- 数学記法の入力と表示に便利なMarkdownとLaTeX構文をサポートするドキュメント
 
-Please see the https://jupyter.org/install website for the latest installation instructions.
+最新のインストール手順については、https://jupyter.org/install ウェブサイトをご覧ください。
 
-Two official applications can open Jupyter notebooks: the original Jupyter Notebook app and the newer Jupyter Lab app (and VS Code has Jupyter notebook support, too). The notebooks provided in this repository are compatible with both.
+Jupyter notebookを開くことができる公式アプリケーションは2つあります: オリジナルのJupyter Notebookアプリと新しいJupyter Labアプリ（VS CodeもJupyter notebookサポートがあります）。このリポジトリで提供されているnotebookは両方と互換性があります。
 
-We recommend installing Jupyter Lab via
-Jupyter Lab can be installed via 
+Jupyter Labは次のようにインストールすることをお勧めします:
 
 ```bash
 conda install -c conda-forge jupyterlab
 ```
 
-or 
+または
 
 ```bash
 pip install jupyterlab
 ```
 
-Finally, please note that the Jupyter notebooks provided in this repository are optional, although we highly recommend them. All code examples found in this book are also available via .py script files (which were converted from the Jupyter notebooks to ensure that they contain the identical code.)
+最後に、このリポジトリで提供されているJupyter notebookはオプションですが、強く推奨することに注意してください。この書籍にあるすべてのコード例は.pyスクリプトファイルでも利用可能です（Jupyter notebookから変換されており、同一のコードが含まれていることを保証しています）。
