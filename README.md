@@ -1,11 +1,11 @@
-# *Machine Learning with PyTorch and Scikit-Learn* Book
+# *PyTorchとScikit-Learnによる機械学習* 書籍
 
-##  Code Repository
+## コードリポジトリ
 
 
-Paperback: 770 pages  
-Publisher: Packt Publishing  
-Language: English
+ペーパーバック: 770ページ  
+出版社: Packt Publishing  
+言語: 英語
 
 ISBN-10: 1801819319   
 ISBN-13: 978-1801819312  
@@ -15,41 +15,41 @@ Kindle ASIN: B09NW48MR1
 
 
 
-## Links
+## リンク
 
-- [Amazon link](https://www.amazon.com/Machine-Learning-PyTorch-Scikit-Learn-scikit-learn-ebook-dp-B09NW48MR1/dp/B09NW48MR1/) 
-- [Packt link](https://www.packtpub.com/product/machine-learning-with-pytorch-and-scikit-learn/9781801819312)
-- [Blog post summarizing the contents](https://sebastianraschka.com/blog/2022/ml-pytorch-book.html)
-
-
-## Table of Contents and Code Notebooks
-
-**Helpful installation and setup instructions can be found in the [README.md file of Chapter 1](ch01/README.md)**.
-
-**In addition, Zbynek Bazanowski contributed [this helpful guide](supplementary/running-on-colab.pdf) explaining how to run the code examples on Google Colab.**
-
-**Please note that these are just the code examples accompanying the book, which we uploaded for your convenience; be aware that these notebooks may not be useful without the formulae and descriptive text.**   
+- [Amazonリンク](https://www.amazon.com/Machine-Learning-PyTorch-Scikit-Learn-scikit-learn-ebook-dp-B09NW48MR1/dp/B09NW48MR1/) 
+- [Packtリンク](https://www.packtpub.com/product/machine-learning-with-pytorch-and-scikit-learn/9781801819312)
+- [内容をまとめたブログ記事](https://sebastianraschka.com/blog/2022/ml-pytorch-book.html)
 
 
-1. Machine Learning - Giving Computers the Ability to Learn from Data [[open dir](ch01)] 
-2. Training Machine Learning Algorithms for Classification [[open dir](ch02)] 
-3. A Tour of Machine Learning Classifiers Using Scikit-Learn [[open dir](ch03)] 
-4. Building Good Training Sets – Data Pre-Processing [[open dir](ch04)] 
-5. Compressing Data via Dimensionality Reduction [[open dir](ch05)] 
-6. Learning Best Practices for Model Evaluation and Hyperparameter Optimization [[open dir](ch06)]
-7. Combining Different Models for Ensemble Learning [[open dir](ch07)] 
-8. Applying Machine Learning to Sentiment Analysis  [[open dir](ch08)]  
-9. Predicting Continuous Target Variables with Regression Analysis [[open dir](ch09)] 
-10. Working with Unlabeled Data – Clustering Analysis [[open dir](ch10)] 
-11. Implementing a Multi-layer Artificial Neural Network from Scratch [[open dir](ch11)] 
-12. Parallelizing Neural Network Training with PyTorch [[open dir](ch12)] 
-13. Going Deeper -- The Mechanics of PyTorch [[open dir](ch13)] 
-14. Classifying Images with Deep Convolutional Neural Networks [[open dir](ch14)]  
-15. Modeling Sequential Data Using Recurrent Neural Networks [[open dir](ch15)]  
-16. Transformers -- Improving Natural Language Processing with Attention Mechanisms [[open dir](ch16)]  
-17. Generative Adversarial Networks for Synthesizing New Data [[open dir](ch17)]   
-18. Graph Neural Networks for Capturing Dependencies in Graph Structured Data [[open dir](ch18)]  
-19. Reinforcement Learning for Decision Making in Complex Environments [[open dir](ch19)] 
+## 目次とコードノートブック
+
+**役立つインストールと設定手順は、[第1章のREADME.mdファイル](ch01/README.md)に記載されています**。
+
+**また、Zbynek Bazanowskiが、Google Colabでコード例を実行する方法を説明した[この役立つガイド](supplementary/running-on-colab.pdf)を寄稿しています**。
+
+**これらは書籍に付随するコード例のみであり、利便性のためにアップロードしたものですが、数式や説明テキストなしではこれらのノートブックは有用でない場合があることにご注意ください**。   
+
+
+1. 機械学習 - コンピュータにデータから学習する能力を与える [[ディレクトリを開く](ch01)] 
+2. 分類のための機械学習アルゴリズムの訓練 [[ディレクトリを開く](ch02)] 
+3. Scikit-Learnを使った機械学習分類器のツアー [[ディレクトリを開く](ch03)] 
+4. 良い訓練セットの構築 – データ前処理 [[ディレクトリを開く](ch04)] 
+5. 次元削減によるデータ圧縮 [[ディレクトリを開く](ch05)] 
+6. モデル評価とハイパーパラメータ最適化のベストプラクティスの学習 [[ディレクトリを開く](ch06)]
+7. アンサンブル学習のためのさまざまなモデルの組み合わせ [[ディレクトリを開く](ch07)] 
+8. 感情分析への機械学習の適用 [[ディレクトリを開く](ch08)]  
+9. 回帰分析による連続目標変数の予測 [[ディレクトリを開く](ch09)] 
+10. ラベルなしデータの処理 – クラスタリング分析 [[ディレクトリを開く](ch10)] 
+11. 多層人工ニューラルネットワークのゼロからの実装 [[ディレクトリを開く](ch11)] 
+12. PyTorchによるニューラルネットワーク訓練の並列化 [[ディレクトリを開く](ch12)] 
+13. より深く - PyTorchのメカニズム [[ディレクトリを開く](ch13)] 
+14. 深層畳み込みニューラルネットワークによる画像分類 [[ディレクトリを開く](ch14)]  
+15. 再帰ニューラルネットワークを用いた逐次データのモデリング [[ディレクトリを開く](ch15)]  
+16. Transformer -- 注意メカニズムによる自然言語処理の改善 [[ディレクトリを開く](ch16)]  
+17. 新しいデータ合成のための敵対的生成ネットワーク [[ディレクトリを開く](ch17)]   
+18. グラフ構造データの依存関係を捉えるグラフニューラルネットワーク [[ディレクトリを開く](ch18)]  
+19. 複雑な環境での意思決定のための強化学習 [[ディレクトリを開く](ch19)] 
 
 
 ---
@@ -57,7 +57,7 @@ Kindle ASIN: B09NW48MR1
 <br>
 <br>
 
-Sebastian Raschka, Yuxi (Hayden) Liu, and Vahid Mirjalili. *Machine Learning with PyTorch and Scikit-Learn*. Packt Publishing, 2022.
+Sebastian Raschka、Yuxi (Hayden) Liu、Vahid Mirjalili. *PyTorchとScikit-Learnによる機械学習*. Packt Publishing, 2022.
 
     @book{mlbook2022,  
     address = {Birmingham, UK},  
@@ -70,16 +70,16 @@ Sebastian Raschka, Yuxi (Hayden) Liu, and Vahid Mirjalili. *Machine Learning wit
 
 ​    
 
-## Coding Environment
+## コーディング環境
 
 
 
-Please see the [ch01/README.md](ch01/README.md) file for setup recommendations.
+設定の推奨事項については、[ch01/README.md](ch01/README.md)ファイルをご覧ください。
 
 
 
 
-## Translations into other Languages
+## 他言語への翻訳
 
-- Serbian Translation: [Mašinsko učenje uz PyTorch i Scikit-Learn](https://knjige.kombib.rs/masinsko-ucenje-uz-pytorch-i-scikit-learn).
+- セルビア語翻訳: [Mašinsko učenje uz PyTorch i Scikit-Learn](https://knjige.kombib.rs/masinsko-ucenje-uz-pytorch-i-scikit-learn).
 ISBN: 9788673105772
