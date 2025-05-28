@@ -1,21 +1,21 @@
-##  Chapter 2: Training Simple Machine Learning Algorithms for Classification
+##  第2章: 分類のためのシンプルな機械学習アルゴリズムの訓練
 
-### Chapter Outline
+### 章の概要
 
-- Artificial neurons – a brief glimpse into the early history of machine learning
-  - The formal definition of an artificial neuron
-  - The perceptron learning rule
-- Implementing a perceptron learning algorithm in Python 
-  - An object-oriented perceptron API
-  - Training a perceptron model on the Iris dataset
-- Adaptive linear neurons and the convergence of learning
-  - Minimizing cost functions with gradient descent
-  - Implementing an Adaptive Linear Neuron in Python
-  - Improving gradient descent through feature scaling
-  - Large scale machine learning and stochastic gradient descent
-- Summary
+- 人工ニューロン – 機械学習の初期の歴史への簡単な一瞥
+  - 人工ニューロンの正式な定義
+  - パーセプトロン学習則
+- Pythonでのパーセプトロン学習アルゴリズムの実装
+  - オブジェクト指向パーセプトロンAPI
+  - アイリスデータセットでのパーセプトロンモデルの訓練
+- 適応線形ニューロンと学習の収束
+  - 勾配降下法によるコスト関数の最小化
+  - Pythonでの適応線形ニューロンの実装
+  - 特徴量スケーリングによる勾配降下法の改善
+  - 大規模機械学習と確率的勾配降下法
+- まとめ
 
 
 
-**Please refer to the [README.md](../ch01/README.md) file in [`../ch01`](../ch01) for more information about running the code examples.**
+**コード例の実行に関する詳細情報については、[`../ch01`](../ch01)の[README.md](../ch01/README.md)ファイルを参照してください。**
 
