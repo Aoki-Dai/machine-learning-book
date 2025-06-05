@@ -1,28 +1,28 @@
-##  Chapter 3: A Tour of Machine Learning Classifiers Using scikit-learn
+##  第3章: scikit-learnを使った機械学習分類器の概観
 
-### Chapter Outline
+### 章の概要
 
-- Choosing a classification algorithm
-- First steps with scikit-learn -- training a perceptron
-- Modeling class probabilities via logistic regression
-  - Logistic regression intuition and conditional probabilities
-  - Learning the weights of the logistic cost function
-  - Converting an Adaline implementation into an algorithm for logistic regression
-  - Training a logistic regression model with scikit-learn
-  - Tackling overfitting via regularization
-- Maximum margin classification with support vector machines
-  - Maximum margin intuition
-  - Dealing with a nonlinearly separable case using slack variables
-  - Alternative implementations in scikit-learn
-- Solving nonlinear problems using a kernel SVM
-  - Kernel methods for linearly inseparable data
-  - Using the kernel trick to find separating hyperplanes in high-dimensional space 
-- Decision tree learning
-  - Maximizing information gain – getting the most bang for your buck
-  - Building a decision tree
-  - Combining multiple decision trees via random forests
-- K-nearest neighbors – a lazy learning algorithm
-- Summary
+- 分類アルゴリズムの選択
+- scikit-learnでの最初のステップ -- パーセプトロンの訓練
+- ロジスティック回帰によるクラス確率のモデリング
+  - ロジスティック回帰の直感と条件付き確率
+  - ロジスティック損失関数の重みの学習
+  - Adaline実装をロジスティック回帰アルゴリズムに変換
+  - scikit-learnでのロジスティック回帰モデルの訓練
+  - 正則化による過学習への対処
+- サポートベクターマシンによる最大マージン分類
+  - 最大マージンの直感
+  - スラック変数を使った線形分離不可能なケースへの対処
+  - scikit-learnでの代替実装
+- カーネルSVMを使った非線形問題の解決
+  - 線形分離不可能データに対するカーネル法
+  - カーネルトリックを使った高次元空間での分離超平面の発見
+- 決定木学習
+  - 情報利得の最大化 – 最大の効果を得る
+  - 決定木の構築
+  - ランダムフォレストによる複数の決定木の組み合わせ
+- k近傍法 – 怠惰学習アルゴリズム
+- まとめ
 
-**Please refer to the [README.md](../ch01/README.md) file in [`../ch01`](../ch01) for more information about running the code examples.**
+**コード例の実行についての詳細情報は、[`../ch01`](../ch01)の[README.md](../ch01/README.md)ファイルを参照してください。**
 
