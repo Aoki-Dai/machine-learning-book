@@ -1,32 +1,40 @@
-# Current Errata
+# 現在の正誤表
 
 &nbsp;
-## Chapter 1
+## 第1章
 
-Not an errata but an improvement suggestion. Currently, we have the following paragraph in the "Notational Conventions" section:
-
-
-We will use lowercase, bold-face letters to refer to vectors ($\mathbf{x} \in \mathbb{R}^{n \times 1}$) and uppercase, bold-face letters to refer to matrices $(\mathbf{X} \in \mathbb{R}^{n \times m}$). To refer to single elements in a vector or matrix, we will write the letters in italics $(x^{(n)}$ or $x_m^{(n)}$, respectively).
+正誤表ではありませんが、改善提案です。現在、「記法の規則」セクションに以下の段落があります：
 
 
-This can be improved as follows:
+ベクトルを表すために小文字の太字文字を使用し（$\mathbf{x} \in \mathbb{R}^{n \times 1}$）、行列を表すために大文字の太字文字を使用します（$\mathbf{X} \in \mathbb{R}^{n \timeこのページの下部で、以下のように記載されています：
+
+> そしてモデルは訓練データセットで100パーセントの精度に達します。検証データセットの精度は95パーセントで、モデルが若干過学習していることを示しています。
+
+しかし、値は訓練精度90%、検証精度85%であるべきです。
+
+**432ページ**
+
+`import sklearn.model_selection` の行は冗長で削除できます。ルまたは行列の単一要素を参照するときは、文字をイタリック体で書きます（それぞれ $x^{(n)}$ または $x_m^{(n)}$）。
 
 
-We will use lowercase, bold-face letters to refer to vectors ($\mathbf{x} \in \mathbb{R}^{n \times 1}$ for column vectors and $\mathbf{x} \in \mathbb{R}^{1 \times m}$ for row vectors) and uppercase, bold-face letters to refer to matrices $(\mathbf{X} \in \mathbb{R}^{n \times m}$). To refer to single elements in a vector or matrix, we will write the letters in italics $(x^{(n)}$ or $x_m^{(n)}$, respectively).
+これは以下のように改善できます：
 
-In addition, in the same box, 
+
+ベクトルを表すために小文字の太字文字を使用し（列ベクトルの場合は $\mathbf{x} \in \mathbb{R}^{n \times 1}$、行ベクトルの場合は $\mathbf{x} \in \mathbb{R}^{1 \times m}$）、行列を表すために大文字の太字文字を使用します（$\mathbf{X} \in \mathbb{R}^{n \times m}$）。ベクトルまたは行列の単一要素を参照するときは、文字をイタリック体で書きます（それぞれ $x^{(n)}$ または $x_m^{(n)}$）。
+
+また、同じボックス内で、
 
 $$
 \mathbf{X}^{(i)} = \left[ x_1^{(i)} \, x_2^{(i)} \, x_3^{(i)} \, x_4^{(i)} \right]
 $$
 
-can be changed to
+は以下のように変更できます：
 
 $$
 \mathbf{x}^{(i)} = \left[ x_1^{(i)} \, x_2^{(i)} \, x_3^{(i)} \, x_4^{(i)} \right], \quad 1 \leq i \leq n.
 $$
 
-And
+そして
 
 $$
 \mathbf{x}_j = \left[ \begin{array}{c}
@@ -37,7 +45,7 @@ x_j^{(150)}
 \end{array} \right]
 $$
 
-can be changed to
+は以下のように変更できます：
 
 $$
 \mathbf{x}_j = \left[ \begin{array}{c}
@@ -50,40 +58,40 @@ $$
 
 
 &nbsp;
-## Chapter 3
+## 第3章
 
-**Page 63**
+**66ページ**
 
-A small stylistic issue: The summation symbol at the bottom currently shows 
+小さなスタイル上の問題：現在、下部の和記号は
 
 ```math
 \sum_{i=1}
 ```
 
- but should be either 
+となっていますが、以下のいずれかであるべきです：
 
  ```math
  \sum_{i}
  ```
 
-or 
+または
 
 ```math
 \sum_{i=1}^{n}
 ```
 
-**Page 66**
+**69ページ**
 
-The doc strings of the LogisticRegressionGD classifier reference "Mean squared error loss" -- this is a copy-paste error and should be "Log loss".
+LogisticRegressionGD分類器のdocstringで「平均二乗誤差損失」と記載されていますが、これはコピー・ペーストエラーで、「対数損失」であるべきです。
 
-**Page 84**
+**87ページ**
 
-A larger gamma value should create a smaller (not larger) radius.
+gammaの値が大きいほど、半径は小さく（大きくではなく）なります。
 
 &nbsp;
-## Chapter 4
+## 第4章
 
-In the code block, it says
+コードブロックで、次のように記載されています：
 
 ```python
 # Note that C=1.0 is the default. You can increase
@@ -91,56 +99,56 @@ In the code block, it says
 # stronger or weaker, respectively.
 ```
 
-But should have been "weaker or stronger" not "stronger or weaker"
+しかし、「stronger or weaker」ではなく「weaker or stronger」であるべきです
 
 &nbsp;
-## Chapter 6
+## 第6章
 
-**Page 185**
+**185ページ**
 
-In the Figure 6.6 caption, it currently says "...SVM hyperparameter C" but it should say "...logistic regression hyperparameter C".
-
-&nbsp;
-## Chapter 10
-
-**Page 313**
-
-In the sentence "...identify the value of k where the distortion begins to increase most rapidly..." *decrease* would be the more correct term as we read the figure from left to right (not right to left).
+図6.6のキャプションで、現在「...SVM hyperparameter C」となっていますが、「...logistic regression hyperparameter C」であるべきです。
 
 &nbsp;
-## Chapter 11
+## 第10章
 
-**Page 341**
+**313ページ**
 
-Add bias unit to the net input.
+「...歪みが最も急速に増加し始めるkの値を特定する...」という文で、図を左から右に読むため（右から左ではなく）、*減少* がより正確な用語です。
 
-**Page 354**
+&nbsp;
+## 第11章
 
-The MSE is normalized via `mse = mse/i` but should be normalized via `mse = mse/(i+1)` instead. (This does not affect the results in shown below though. The MSE is still 0.3.)
+**341ページ**
 
-**Page 366**
+ネット入力にバイアス項を追加。
 
-It says 
+**354ページ**
+
+MSEは `mse = mse/i` で正規化されていますが、代わりに `mse = mse/(i+1)` で正規化されるべきです。（ただし、これは以下に示される結果には影響しません。MSEは依然として0.3です。）
+
+**366ページ**
+
+以下のように記載されています：
 
 ```math
 \frac{\partial L}{\partial w_{1,1}^{(\text {out })}} = ...
 ```
 
- but should be 
+しかし、以下であるべきです：
 
  ```math
 \frac{\partial L}{\partial w_{1,1}^{(\text {h })}}
  ```
 
-to match the figure above and text below.
+上の図と下のテキストに合わせるため。
 
-**Page 361**
+**361ページ**
 
 ```math
 \frac{\partial}{\partial w_{j, l}^{(l)}}=L(\boldsymbol{W}, \boldsymbol{b}) 
 ```
 
-should be 
+は以下であるべきです：
 
 ```math
 \frac{\partial L}{\partial w_{j, l}^{(l)}}
@@ -148,32 +156,31 @@ should be
 
 
 &nbsp;
-## Chapter 12
+## 第12章
 
-**Page 376**
+**376ページ**
 
-The text says 
+テキストで以下のように記載されています：
 
-> For this, PyTorch provides a convenient torch.chunk() function, which divides an input tensor into a list of equally
-sized tensors. [...] If the tensor size is not divisible by the chunks value, the last chunk will be smaller.
+> このため、PyTorchは便利な torch.chunk() 関数を提供しており、入力テンソルを等しいサイズのテンソルのリストに分割します。[...] テンソルサイズがchunksの値で割り切れない場合、最後のチャンクは小さくなります。
 
-But this is not necessarily true. A better way to say this, as suggested in the discussion [#203](https://github.com/rasbt/machine-learning-book/discussions/203), is
+しかし、これは必ずしも正しくありません。ディスカッション [#203](https://github.com/rasbt/machine-learning-book/discussions/203) で提案されているように、より良い表現は以下の通りです：
 
-> If the tensor size is not divisible by the chunks value, the resulting number of chunks may be less than intended and/or the last chunk may be smaller than the others.
-
-
-**Page 380**
-
-We use `TensorDataset` even though we defined the custom `JointDataset`
-
-**Page 393**
-
-The line `y_pred = model(X_test_norm).detach().numpy()` should be changed to just `y_pred = model(X_test_norm)` to avoid detaching twice, which know raises an error in PyTorch 2.x.
+> テンソルサイズがchunksの値で割り切れない場合、結果として得られるチャンクの数は意図した数より少なくなる可能性があり、および/または最後のチャンクが他のチャンクより小さくなる可能性があります。
 
 
-**Page 431**
+**380ページ**
 
-When using Torchmetrics 0.8.0 or newer, the following lines
+カスタムの `JointDataset` を定義したにも関わらず、`TensorDataset` を使用しています
+
+**393ページ**
+
+`y_pred = model(X_test_norm).detach().numpy()` の行は、単に `y_pred = model(X_test_norm)` に変更すべきです。二重にdetachすることを避けるためで、これはPyTorch 2.xでエラーが発生することが知られています。
+
+
+**431ページ**
+
+Torchmetrics 0.8.0以降を使用する場合、以下の行：
 
 ```python
 self.train_acc = Accuracy()
@@ -181,7 +188,7 @@ self.valid_acc = Accuracy()
 self.test_acc = Accuracy()
 ```
 
-need to be changed to
+は以下のように変更する必要があります：
 
 ```python
 self.train_acc = Accuracy(task="multiclass", num_classes=10)
@@ -191,10 +198,10 @@ self.test_acc = Accuracy(task="multiclass", num_classes=10)
 
 
 &nbsp;
-## Chapter 13
+## 第13章
 
 
-**Page 423**
+**423ページ**
 
 At the bottom of this page, it says
 
@@ -208,77 +215,80 @@ But the values should be 90% training accuracy and 85% validation accuracy.
 The line `import sklearn.model_selection` is redundant and can be removed.
 
 &nbsp;
-## Chapter 14
+## 第14章
 
 
-**Page 459**
+**459ページ**
 
-The `conv1d()` and `conv2d()` functions on page 459 was improved through a kind [pull request](https://github.com/rasbt/machine-learning-book/pull/168) by [@JaGeo](https://github.com/JaGeo), enabling it to handle cases with strides different from (1,1).
+459ページの `conv1d()` と `conv2d()` 関数は、[@JaGeo](https://github.com/JaGeo) による親切な[プルリクエスト](https://github.com/rasbt/machine-learning-book/pull/168)によって改善され、(1,1)以外のストライドのケースを処理できるようになりました。
 
 
-**Page 489**
+**489ページ**
 
-Not an error, but for legibility, it would be good to change 
+エラーではありませんが、可読性のために、以下を変更すると良いでしょう： 
 
 ```python
 for j in range(num_epochs):
     img_batch, label_batch = next(iter(data_loader))
 ```
 
-to
+を
 
 ```python
 for img_batch, label_batch in data_loader:
 ```
 
+に。
+
 &nbsp;
-## Chapter 15
+## 第15章
 
-**Page 505**
+**505ページ**
 
-The equation is technically correct, but it looks like the character 0 (zero) was used instead of the letter o:
+方程式は技術的には正しいですが、文字oの代わりに文字0（ゼロ）が使われているように見えます：
 
 ```math
 \mathbf{o}^{\left( t \right)} = \sigma_{0}\left( \mathbf{W}_{ho}\mathbf{h}^{\left( t \right)}+\mathbf{b}_{0} \right)
 ```
-should be
+
+は以下であるべきです：
 
 ```math
 \mathbf{o}^{\left( t \right)} = \sigma_{o}\left( \mathbf{W}_{ho}\mathbf{h}^{\left( t \right)}+\mathbf{b}_{o} \right)
 ```
 
-**Page 530**
+**530ページ**
 
-The line `from torch.utils.data import Dataset` appears twice.
+`from torch.utils.data import Dataset` の行が2回出現しています。
 
 &nbsp;
-## Chapter 16
+## 第16章
 
-**Page 547**
+**547ページ**
 
-Not an error, but where we are summing over the columns via `attention_weights.sum(dim=1)`, we could mention that this matrix is symmetric and that we could also sum over the rows and get the same results.
+エラーではありませんが、`attention_weights.sum(dim=1)` を介して列の合計を求めている箇所で、この行列は対称であり、行の合計を求めても同じ結果が得られることを言及できます。
 
 ---
 
 &nbsp;
-## Chapter 17
+## 第17章
 
-**Page 626**
+**626ページ**
 
-There seems to be a mistake in the KL information box. The minus sign should either be removed or the P(x)/Q(x) should be changed to  Q(x)/P(x). In addition, there log sign seems missing. Correct formulas are
+KL情報ボックスに間違いがあるようです。マイナス記号を削除するか、P(x)/Q(x) を Q(x)/P(x) に変更するべきです。さらに、log記号が欠けているようです。正しい公式は以下の通りです：
 
 ```math
 KL(P \| Q) = -\sum_{i} P(x_i) \log \frac{Q(x_i)}{P(x_i)}
 ```
 
-or
+または
 
 ```math
 KL(P \| Q) = \sum_{i} P(x_i) \log \frac{P(x_i)}{Q(x_i)}
 ```
 
 
-For books printed before 16 Nov 2022, please see the [Old Errata](old-errata).
+2022年11月16日以前に印刷された書籍については、[旧正誤表](old-errata)を参照してください。
 
 
 
