@@ -21,24 +21,19 @@ from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
+# # PyTorchとScikit-Learnによる機械学習  
+# # -- コード例
 
+# ## パッケージバージョンチェック
 
-
-
-
-# # Machine Learning with PyTorch and Scikit-Learn  
-# # -- Code Examples
-
-# ## Package version checks
-
-# Add folder to path in order to load from the check_packages.py script:
+# check_packages.pyスクリプトから読み込むためにフォルダをパスに追加:
 
 
 
 sys.path.insert(0, '..')
 
 
-# Check recommended package versions:
+# 推奨パッケージバージョンをチェック:
 
 
 
@@ -53,60 +48,66 @@ d = {
 check_packages(d)
 
 
-# # Chapter 3 - A Tour of Machine Learning Classifiers Using Scikit-Learn
+# # 第3章 - Scikit-Learnを使った機械学習分類器の概観
 
-# ### Overview
+# ### 概要
 
-# - [Choosing a classification algorithm](#Choosing-a-classification-algorithm)
-# - [First steps with scikit-learn](#First-steps-with-scikit-learn)
-#     - [Training a perceptron via scikit-learn](#Training-a-perceptron-via-scikit-learn)
-# - [Modeling class probabilities via logistic regression](#Modeling-class-probabilities-via-logistic-regression)
-#     - [Logistic regression intuition and conditional probabilities](#Logistic-regression-intuition-and-conditional-probabilities)
-#     - [Learning the weights of the logistic loss function](#Learning-the-weights-of-the-logistic-loss-function)
-#     - [Training a logistic regression model with scikit-learn](#Training-a-logistic-regression-model-with-scikit-learn)
-#     - [Tackling overfitting via regularization](#Tackling-overfitting-via-regularization)
-# - [Maximum margin classification with support vector machines](#Maximum-margin-classification-with-support-vector-machines)
-#     - [Maximum margin intuition](#Maximum-margin-intuition)
-#     - [Dealing with the nonlinearly separable case using slack variables](#Dealing-with-the-nonlinearly-separable-case-using-slack-variables)
-#     - [Alternative implementations in scikit-learn](#Alternative-implementations-in-scikit-learn)
-# - [Solving nonlinear problems using a kernel SVM](#Solving-nonlinear-problems-using-a-kernel-SVM)
-#     - [Using the kernel trick to find separating hyperplanes in higher dimensional space](#Using-the-kernel-trick-to-find-separating-hyperplanes-in-higher-dimensional-space)
-# - [Decision tree learning](#Decision-tree-learning)
-#     - [Maximizing information gain – getting the most bang for the buck](#Maximizing-information-gain-–-getting-the-most-bang-for-the-buck)
-#     - [Building a decision tree](#Building-a-decision-tree)
-#     - [Combining weak to strong learners via random forests](#Combining-weak-to-strong-learners-via-random-forests)
-# - [K-nearest neighbors – a lazy learning algorithm](#K-nearest-neighbors-–-a-lazy-learning-algorithm)
-# - [Summary](#Summary)
-
-
+# - [分類アルゴリズムの選択](#Choosing-a-classification-algorithm)
+# - [scikit-learnでの最初のステップ](#First-steps-with-scikit-learn)
+#     - [scikit-learnでのパーセプトロンの訓練](#Training-a-perceptron-via-scikit-learn)
+# - [ロジスティック回帰によるクラス確率のモデリング](#Modeling-class-probabilities-via-logistic-regression)
+#     - [ロジスティック回帰の直感と条件付き確率](#Logistic-regression-intuition-and-conditional-probabilities)
+#     - [ロジスティック損失関数の重みの学習](#Learning-the-weights-of-the-logistic-loss-function)
+#     - [scikit-learnでのロジスティック回帰モデルの訓練](#Training-a-logistic-regression-model-with-scikit-learn)
+#     - [正則化による過学習への対処](#Tackling-overfitting-via-regularization)
+# - [サポートベクターマシンによる最大マージン分類](#Maximum-margin-classification-with-support-vector-machines)
+#     - [最大マージンの直感](#Maximum-margin-intuition)
+#     - [スラック変数を使った非線形分離不可能ケースへの対処](#Dealing-with-the-nonlinearly-separable-case-using-slack-variables)
+#     - [scikit-learnでの代替実装](#Alternative-implementations-in-scikit-learn)
+# - [カーネルSVMを使った非線形問題の解決](#Solving-nonlinear-problems-using-a-kernel-SVM)
+#     - [カーネルトリックを使った高次元空間での分離超平面の発見](#Using-the-kernel-trick-to-find-separating-hyperplanes-in-higher-dimensional-space)
+# - [決定木学習](#Decision-tree-learning)
+#     - [情報利得の最大化 – 最大の効果を得る](#Maximizing-information-gain-–-getting-the-most-bang-for-the-buck)
+#     - [決定木の構築](#Building-a-decision-tree)
+#     - [ランダムフォレストによる弱学習器から強学習器への結合](#Combining-weak-to-strong-learners-via-random-forests)
+# - [k近傍法 – 怠惰学習アルゴリズム](#K-nearest-neighbors-–-a-lazy-learning-algorithm)
+# - [まとめ](#Summary)
 
 
 
 
 
-# # Choosing a classification algorithm
+
+
+# # 分類アルゴリズムの選択
 
 # ...
 
-# # First steps with scikit-learn
+# # scikit-learnでの最初のステップ
 
-# Loading the Iris dataset from scikit-learn. Here, the third column represents the petal length, and the fourth column the petal width of the flower examples. The classes are already converted to integer labels where 0=Iris-Setosa, 1=Iris-Versicolor, 2=Iris-Virginica.
-
-
+# scikit-learnからIrisデータセットを読み込みます。ここで、3列目は花びらの長さ、4列目は花びらの幅を表します。クラスはすでに整数ラベルに変換されており、0=Iris-Setosa、1=Iris-Versicolor、2=Iris-Virginicaとなっています。
 
 
+
+
+# Iris データセットをロード
 iris = datasets.load_iris()
+# 3,4列目の特徴量を抽出
 X = iris.data[:, [2, 3]]
+# クラスラベルを取得
 y = iris.target
 
+# 一意なクラスラベルを出力
 print('Class labels:', np.unique(y))
 
 
-# Splitting data into 70% training and 30% test data:
+# データを訓練70%、テスト30%に分割:
 
 
 
 
+# データセットを70%トレーニングセットに30%をテストセットに分割
+# train_test_split 関数はランダムにデータを分割する
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=1, stratify=y)
 
@@ -118,69 +119,84 @@ print('Labels counts in y_train:', np.bincount(y_train))
 print('Labels counts in y_test:', np.bincount(y_test))
 
 
-# Standardizing the features:
+# 特徴量の標準化:
 
 
 
 
 sc = StandardScaler()
+# 訓練データの平均と標準偏差を計算
 sc.fit(X_train)
+# 平均と標準偏差を用いてデータを標準化
 X_train_std = sc.transform(X_train)
 X_test_std = sc.transform(X_test)
 
 
 
-# ## Training a perceptron via scikit-learn
+# ## scikit-learnでのパーセプトロンの訓練
 
 
 
 
+# 学習率を0.1に設定し、パーセプトロンのインスタンスを作成
 ppn = Perceptron(eta0=0.1, random_state=1)
+# 訓練データを用いてパーセプトロンを学習
 ppn.fit(X_train_std, y_train)
 
 
 
 
+# テストデータで予測を行う
 y_pred = ppn.predict(X_test_std)
+# 誤分類したデータ点の数を出力
 print('Misclassified examples: %d' % (y_test != y_pred).sum())
 
 
 
 
-
+# 精度を計算(分類の正解率)
+# y_test: 正解ラベル, y_pred: 予測ラベル
 print('Accuracy: %.3f' % accuracy_score(y_test, y_pred))
 
 
 
 
+# 精度を計算するための別の方法
+# ppn.score メソッドを使用
+# X_test_std: テストデータ, y_test: 正解ラベル
 print('Accuracy: %.3f' % ppn.score(X_test_std, y_test))
 
 
 
 
 
-# To check recent matplotlib compatibility
+# matplotlib の最新バージョンとの互換性をチェック
 
 
 def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
 
-    # setup marker generator and color map
+    # マーカージェネレーターとカラーマップを設定
     markers = ('o', 's', '^', 'v', '<')
     colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
     cmap = ListedColormap(colors[:len(np.unique(y))])
 
-    # plot the decision surface
+    # 決定領域をプロット
     x1_min, x1_max = X[:, 0].min() - 1, X[:, 0].max() + 1
     x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    # grid pointsを生成
     xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution),
                            np.arange(x2_min, x2_max, resolution))
+    # 各特徴量を１次元配列に変換し、分類器で予測
     lab = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
+    # 予測結果を元のグリッドポイントのデータサイズに変換
     lab = lab.reshape(xx1.shape)
+    # グリッドポイントの等高線をプロット
     plt.contourf(xx1, xx2, lab, alpha=0.3, cmap=cmap)
+    # 軸の範囲の設定
     plt.xlim(xx1.min(), xx1.max())
     plt.ylim(xx2.min(), xx2.max())
 
-    # plot class examples
+    # クラス例をプロット
     for idx, cl in enumerate(np.unique(y)):
         plt.scatter(x=X[y == cl, 0], 
                     y=X[y == cl, 1],
@@ -190,9 +206,9 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
                     label=f'Class {cl}', 
                     edgecolor='black')
 
-    # highlight test examples
+    # テストデータ点を目立たせる（点を丸で表示）
     if test_idx:
-        # plot all examples
+        # 全てのデータ点をプロット
         X_test, y_test = X[test_idx, :], y[test_idx]
 
         plt.scatter(X_test[:, 0],
@@ -203,33 +219,39 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
                     linewidth=1,
                     marker='o',
                     s=100, 
-                    label='Test set')        
+                    label='Test set')
 
 
-# Training a perceptron model using the standardized training data:
+# 標準化された訓練データを使ってパーセプトロンモデルを訓練:
 
 
 
+# 訓練データとテストデータの特徴量を行方向に結合
 X_combined_std = np.vstack((X_train_std, X_test_std))
+# 訓練データとテストデータのクラスラベルを結合
 y_combined = np.hstack((y_train, y_test))
 
+# 決定領域をプロット
 plot_decision_regions(X=X_combined_std, y=y_combined,
                       classifier=ppn, test_idx=range(105, 150))
+# 軸ラベルを設定
 plt.xlabel('Petal length [standardized]')
 plt.ylabel('Petal width [standardized]')
+# 凡例を設定(左上に配置)
 plt.legend(loc='upper left')
 
+# グラフを表示
 plt.tight_layout()
 #plt.savefig('figures/03_01.png', dpi=300)
 plt.show()
 
 
 
-# # Modeling class probabilities via logistic regression
+# # ロジスティック回帰によるクラス確率のモデリング
 
 # ...
 
-# ### Logistic regression intuition and conditional probabilities
+# ### ロジスティック回帰の直感と条件付き確率
 
 
 
@@ -247,7 +269,7 @@ plt.ylim(-0.1, 1.1)
 plt.xlabel('z')
 plt.ylabel('$\sigma (z)$')
 
-# y axis ticks and gridline
+# y軸の目盛りとグリッド線
 plt.yticks([0.0, 0.5, 1.0])
 ax = plt.gca()
 ax.yaxis.grid(True)
@@ -266,7 +288,7 @@ plt.show()
 
 
 
-# ### Learning the weights of the logistic loss function
+# ### ロジスティック損失関数の重みの学習
 
 
 
@@ -299,27 +321,26 @@ plt.show()
 
 
 class LogisticRegressionGD:
-    """Gradient descent-based logistic regression classifier.
+    """勾配降下ベースのロジスティック回帰分類器。
 
-    Parameters
+    Parameters（パラメータ）
     ------------
     eta : float
-      Learning rate (between 0.0 and 1.0)
+      学習率（0.0から1.0の間）
     n_iter : int
-      Passes over the training dataset.
+      訓練データセットに対する繰り返し回数
     random_state : int
-      Random number generator seed for random weight
-      initialization.
+      重みの初期化のための乱数生成器のシード
 
 
-    Attributes
+    Attributes（属性）
     -----------
     w_ : 1d-array
-      Weights after training.
+      訓練後の重み
     b_ : Scalar
-      Bias unit after fitting.
+      学習後のバイアス項
     losses_ : list
-      Log loss function values in each epoch.
+       各エポックでの対数损失関数値
 
     """
     def __init__(self, eta=0.01, n_iter=50, random_state=1):
@@ -328,19 +349,18 @@ class LogisticRegressionGD:
         self.random_state = random_state
 
     def fit(self, X, y):
-        """ Fit training data.
+        """ 訓練データに適合。
 
-        Parameters
+        Parameters（パラメータ）
         ----------
         X : {array-like}, shape = [n_examples, n_features]
-          Training vectors, where n_examples is the number of examples and
-          n_features is the number of features.
+          訓練ベクトル、n_examplesは例の数、n_featuresは特徴量の数
         y : array-like, shape = [n_examples]
-          Target values.
+          目標値
 
-        Returns
+        Returns（戻り値）
         -------
-        self : Instance of LogisticRegressionGD
+        self : LogisticRegressionGDのインスタンス
 
         """
         rgen = np.random.RandomState(self.random_state)
@@ -354,20 +374,20 @@ class LogisticRegressionGD:
             errors = (y - output)
             self.w_ += self.eta * X.T.dot(errors) / X.shape[0]
             self.b_ += self.eta * errors.mean()
-            loss = -y.dot(np.log(output)) - ((1 - y).dot(np.log(1 - output))) / X.shape[0]
+            loss = (-y.dot(np.log(output)) - (1 - y).dot(np.log(1 - output))) / X.shape[0]
             self.losses_.append(loss)
         return self
 
     def net_input(self, X):
-        """Calculate net input"""
+        """総入力を計算"""
         return np.dot(X, self.w_) + self.b_
 
     def activation(self, z):
-        """Compute logistic sigmoid activation"""
+        """ロジスティックシグモイド活性化を計算"""
         return 1. / (1. + np.exp(-np.clip(z, -250, 250)))
 
     def predict(self, X):
-        """Return class label after unit step"""
+        """単位ステップ後のクラスラベルを返す"""
         return np.where(self.activation(self.net_input(X)) >= 0.5, 1, 0)
 
 
@@ -394,7 +414,7 @@ plt.tight_layout()
 plt.show()
 
 
-# ### Training a logistic regression model with scikit-learn
+# ### scikit-learnでのロジスティック回帰モデルの訓練
 
 
 
@@ -438,7 +458,7 @@ lr.predict(X_test_std[0, :].reshape(1, -1))
 
 
 
-# ### Tackling overfitting via regularization
+# ### 正則化による過学習への対処
 
 
 
@@ -468,17 +488,17 @@ plt.show()
 
 
 
-# # Maximum margin classification with support vector machines
+# # サポートベクターマシンによる最大マージン分類
 
 
 
 
 
-# ## Maximum margin intuition
+# ## 最大マージンの直感
 
 # ...
 
-# ## Dealing with the nonlinearly separable case using slack variables
+# ## スラック変数を使った非線形分離不可能ケースへの対処
 
 
 
@@ -502,7 +522,7 @@ plt.tight_layout()
 plt.show()
 
 
-# ## Alternative implementations in scikit-learn
+# ## scikit-learnでの代替実装
 
 
 
@@ -513,7 +533,7 @@ svm = SGDClassifier(loss='hinge')
 
 
 
-# # Solving non-linear problems using a kernel SVM
+# # カーネルSVMを使った非線形問題の解決
 
 
 
@@ -551,7 +571,7 @@ plt.show()
 
 
 
-# ## Using the kernel trick to find separating hyperplanes in higher dimensional space
+# ## カーネルトリックを使った高次元空間での分離超平面の発見
 
 
 
@@ -598,7 +618,7 @@ plt.show()
 
 
 
-# # Decision tree learning
+# # 決定木学習
 
 
 
@@ -625,7 +645,7 @@ plt.show()
 
 
 
-# ## Maximizing information gain - getting the most bang for the buck
+# ## 情報利得の最大化 - 最大の効果を得る
 
 
 
@@ -670,7 +690,7 @@ plt.show()
 
 
 
-# ## Building a decision tree
+# ## 決定木の構築
 
 
 
@@ -709,7 +729,7 @@ plt.show()
 
 
 
-# ## Combining weak to strong learners via random forests
+# ## ランダムフォレストによる弱学習器から強学習器への結合
 
 
 
@@ -731,7 +751,7 @@ plt.show()
 
 
 
-# # K-nearest neighbors - a lazy learning algorithm
+# # k近傍法 - 怠惰学習アルゴリズム
 
 
 
@@ -757,13 +777,13 @@ plt.show()
 
 
 
-# # Summary
+# # まとめ
 
 # ...
 
 # ---
 # 
-# Readers may ignore the next cell.
+# 読者は以下のセルを無視してください。
 
 
 
