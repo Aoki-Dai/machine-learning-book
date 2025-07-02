@@ -1,32 +1,28 @@
-Python Machine Learning - Code Examples
+# Python機械学習 - コード例
 
+## 第4章: 良い訓練データセットの構築 – データ前処理
 
-##  Chapter 4: Building Good Training Datasets – Data Preprocessing
+### 章の概要
 
-### Chapter Outline
+- 欠損データの処理
+  - 表形式データにおける欠損値の特定
+  - 欠損値を持つ訓練例や特徴量の除去
+  - 欠損値の補完
+  - scikit-learn推定器APIの理解
+- カテゴリカルデータの処理
+  - 名義特徴量と順序特徴量
+  - 例示データセットの作成
+  - 順序特徴量のマッピング
+  - クラスラベルのエンコーディング
+  - 名義特徴量に対するワンホットエンコーディングの実行
+- データセットを個別の訓練セットとテストセットに分割
+- 特徴量を同じスケールに揃える
+- 意味のある特徴量の選択
+  - モデル複雑度に対するペナルティとしてのL1およびL2正則化
+  - L2正則化の幾何学的解釈
+  - L1正則化によるスパース解
+  - 逐次特徴選択アルゴリズム
+- ランダムフォレストによる特徴量重要度の評価
+- まとめ
 
-- Dealing with missing data
-  - Identifying missing values in tabular data
-  - Eliminating training examples or features with missing values
-  - Imputing missing values
-  - Understanding the scikit-learn estimator API
-- Handling categorical data
-  - Nominal and ordinal features
-  - Creating an example dataset
-  - Mapping ordinal features
-  - Encoding class labels
-  - Performing one-hot encoding on nominal features
-- Partitioning a dataset into separate training and test sets
-- Bringing features onto the same scale
-- Selecting meaningful features
-  - L1 and L2 regularization as penalties against model complexity
-  - A geometric interpretation of L2 regularization
-  - Sparse solutions with L1 regularization
-  - Sequential feature selection algorithms
-- Assessing feature importance with random forests
-- Summary
-
-
-
-**Please refer to the [README.md](../ch01/README.md) file in [`../ch01`](../ch01) for more information about running the code examples.**
-
+**コード例の実行に関する詳細情報については、[`../ch01`](../ch01)の[README.md](../ch01/README.md)ファイルを参照してください。**
