@@ -256,24 +256,33 @@ plt.show()
 
 
 
-
+# シグモイド関数を定義
 def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
 
+# 0.1間隔で-7から7未満のデータを生成
 z = np.arange(-7, 7, 0.1)
+# 生成したデータでシグモイド関数を実行
 sigma_z = sigmoid(z)
 
+# 元のデータとシグモイド関数の出力をプロット
 plt.plot(z, sigma_z)
+# 垂直線を追加(z=0の位置に)
 plt.axvline(0.0, color='k')
+# y軸の上限と下限を設定
 plt.ylim(-0.1, 1.1)
+# 軸ラベルを設定
 plt.xlabel('z')
 plt.ylabel('$\sigma (z)$')
 
 # y軸の目盛りとグリッド線
 plt.yticks([0.0, 0.5, 1.0])
+# Axesクラスへのobjectの取得
 ax = plt.gca()
+# y軸の目盛りに合わせて水平グリッド線を追加
 ax.yaxis.grid(True)
 
+# グラフを表示
 plt.tight_layout()
 #plt.savefig('figures/03_02.png', dpi=300)
 plt.show()
@@ -292,27 +301,38 @@ plt.show()
 
 
 
+# y=1の損失値を計算する関数
 def loss_1(z):
     return - np.log(sigmoid(z))
 
-
+# y=0の損失値を計算する関数
 def loss_0(z):
     return - np.log(1 - sigmoid(z))
 
+# 0.1間隔で-10から10未満のデータを生成
 z = np.arange(-10, 10, 0.1)
+# シグモイド関数を実行
 sigma_z = sigmoid(z)
 
+# y=1の損失値を計算する関数を実行
 c1 = [loss_1(x) for x in z]
+# 結果をプロット
 plt.plot(sigma_z, c1, label='L(w, b) if y=1')
 
+# y=0の損失値を計算する関数を実行
 c0 = [loss_0(x) for x in z]
+# 結果をプロット
 plt.plot(sigma_z, c0, linestyle='--', label='L(w, b) if y=0')
 
+# x軸とy軸の上限、下限を設定
 plt.ylim(0.0, 5.1)
 plt.xlim([0, 1])
+# 軸のラベルを設定
 plt.xlabel('$\sigma(z)$')
 plt.ylabel('L(w, b)')
+# 凡例を設定
 plt.legend(loc='best')
+# グラフを表示
 plt.tight_layout()
 #plt.savefig('figures/03_04.png', dpi=300)
 plt.show()
@@ -337,25 +357,26 @@ class LogisticRegressionGD:
     -----------
     w_ : 1d-array
       訓練後の重み
-    b_ : Scalar
+    b_ : Scalar（スカラー）
       学習後のバイアス項
     losses_ : list
-       各エポックでの対数损失関数値
+       各エポックでの対数損失関数値
 
     """
     def __init__(self, eta=0.01, n_iter=50, random_state=1):
+        # 学習率の初期化、訓練回数の初期化、乱数生成器のシードを設定
         self.eta = eta
         self.n_iter = n_iter
         self.random_state = random_state
 
     def fit(self, X, y):
-        """ 訓練データに適合。
+        """ 訓練データに適合させる
 
         Parameters（パラメータ）
         ----------
-        X : {array-like}, shape = [n_examples, n_features]
-          訓練ベクトル、n_examplesは例の数、n_featuresは特徴量の数
-        y : array-like, shape = [n_examples]
+        X : {配列のような構造}, shape = [n_examples, n_features]
+          訓練ベクトル、n_examplesはデータ点の数、n_featuresは特徴量の数
+        y : 配列のようなデータ構造, shape = [n_examples]
           目標値
 
         Returns（戻り値）
@@ -363,19 +384,20 @@ class LogisticRegressionGD:
         self : LogisticRegressionGDのインスタンス
 
         """
-        rgen = np.random.RandomState(self.random_state)
-        self.w_ = rgen.normal(loc=0.0, scale=0.01, size=X.shape[1])
-        self.b_ = np.float_(0.)
-        self.losses_ = []
+        rgen = np.random.RandomState(self.random_state) # 乱数生成器のインスタンスを作成
+        self.w_ = rgen.normal(loc=0.0, scale=0.01, size=X.shape[1]) # 重みを正規分布から初期化
+        self.b_ = np.float_(0.) # バイアス項を初期化
+        self.losses_ = [] # 損失値を格納するリストを初期化
 
+        # 訓練回数分まで訓練データを反復処理
         for i in range(self.n_iter):
-            net_input = self.net_input(X)
-            output = self.activation(net_input)
-            errors = (y - output)
-            self.w_ += self.eta * X.T.dot(errors) / X.shape[0]
-            self.b_ += self.eta * errors.mean()
-            loss = (-y.dot(np.log(output)) - (1 - y).dot(np.log(1 - output))) / X.shape[0]
-            self.losses_.append(loss)
+            net_input = self.net_input(X) # 総入力を計算
+            output = self.activation(net_input) # シグモイド関数を適用
+            errors = (y - output) # 出力と目標値の差を計算
+            self.w_ += self.eta * X.T.dot(errors) / X.shape[0] # 重みを更新
+            self.b_ += self.eta * errors.mean() # バイアス項を更新
+            loss = (-y.dot(np.log(output)) - (1 - y).dot(np.log(1 - output))) / X.shape[0] # 損失値を計算
+            self.losses_.append(loss) # 損失値をリストに追加
         return self
 
     def net_input(self, X):
@@ -383,32 +405,40 @@ class LogisticRegressionGD:
         return np.dot(X, self.w_) + self.b_
 
     def activation(self, z):
-        """ロジスティックシグモイド活性化を計算"""
+        """ロジスティックシグモイド活性化関数を計算"""
         return 1. / (1. + np.exp(-np.clip(z, -250, 250)))
 
     def predict(self, X):
-        """単位ステップ後のクラスラベルを返す"""
+        """1ステップ後のクラスラベルを返す"""
         return np.where(self.activation(self.net_input(X)) >= 0.5, 1, 0)
 
 
 
 
 
+# Irisデータセットのクラスラベル0と1のサブセットを作成
 X_train_01_subset = X_train_std[(y_train == 0) | (y_train == 1)]
 y_train_01_subset = y_train[(y_train == 0) | (y_train == 1)]
 
+# ロジスティック回帰のインスタンスを作成
 lrgd = LogisticRegressionGD(eta=0.3, n_iter=1000, random_state=1)
+# 訓練データを用いてロジスティック回帰を学習
 lrgd.fit(X_train_01_subset,
          y_train_01_subset)
 
+# 決定領域をプロット
 plot_decision_regions(X=X_train_01_subset, 
                       y=y_train_01_subset,
                       classifier=lrgd)
 
+# 軸ラベルを設定
 plt.xlabel('Petal length [standardized]')
+# y軸のラベルを設定
 plt.ylabel('Petal width [standardized]')
+# 凡例を設定
 plt.legend(loc='upper left')
 
+# グラフを表示
 plt.tight_layout()
 #plt.savefig('figures/03_05.png', dpi=300)
 plt.show()
@@ -419,21 +449,25 @@ plt.show()
 
 
 
+# ロジスティック回帰のインスタンスを生成
 lr = LogisticRegression(C=100.0, solver='lbfgs', multi_class='ovr')
+# 訓練データをモデルに適合させる
 lr.fit(X_train_std, y_train)
 
+# 決定領域をプロット
 plot_decision_regions(X_combined_std, y_combined,
                       classifier=lr, test_idx=range(105, 150))
-plt.xlabel('Petal length [standardized]')
+plt.xlabel('Petal length [standardized]') # 軸ラベルを設定
 plt.ylabel('Petal width [standardized]')
-plt.legend(loc='upper left')
-plt.tight_layout()
+plt.legend(loc='upper left') # 凡例を設定
+plt.tight_layout() # グラフを表示
 #plt.savefig('figures/03_06.png', dpi=300)
 plt.show()
 
 
 
 
+# テストセットの最初の3つのデータ点の確率を予測
 lr.predict_proba(X_test_std[:3, :])
 
 
@@ -444,16 +478,19 @@ lr.predict_proba(X_test_std[:3, :]).sum(axis=1)
 
 
 
+# 各行で最も大きい列を特定
 lr.predict_proba(X_test_std[:3, :]).argmax(axis=1)
 
 
 
 
+# predictメソッドを直接呼び出す方が便利
 lr.predict(X_test_std[:3, :])
 
 
 
 
+# 1行のデータを2次元配列に変換する方法、reshapeメソッドで新しい次元を追加
 lr.predict(X_test_std[0, :].reshape(1, -1))
 
 
@@ -466,15 +503,17 @@ lr.predict(X_test_std[0, :].reshape(1, -1))
 
 
 
-weights, params = [], []
+weights, params = [], [] # 重み係数と逆正則化パラメータのリストを生成
+# 10個の逆正則化パラメータに対応するロジスティック回帰モデルを処理
 for c in np.arange(-5, 5):
     lr = LogisticRegression(C=10.**c,
                             multi_class='ovr')
     lr.fit(X_train_std, y_train)
-    weights.append(lr.coef_[1])
-    params.append(10.**c)
+    weights.append(lr.coef_[1]) # 重み係数を格納
+    params.append(10.**c) # 逆正則化パラメータを格納
 
-weights = np.array(weights)
+weights = np.array(weights) # 重み係数をNumPy配列に変換
+# 横軸に逆正則化パラメータ、縦軸に重み係数をプロット
 plt.plot(params, weights[:, 0],
          label='Petal length')
 plt.plot(params, weights[:, 1], linestyle='--',
@@ -482,7 +521,7 @@ plt.plot(params, weights[:, 1], linestyle='--',
 plt.ylabel('Weight coefficient')
 plt.xlabel('C')
 plt.legend(loc='upper left')
-plt.xscale('log')
+plt.xscale('log') # x軸を対数スケールに設定
 #plt.savefig('figures/03_08.png', dpi=300)
 plt.show()
 
@@ -507,9 +546,10 @@ plt.show()
 
 
 
-svm = SVC(kernel='linear', C=1.0, random_state=1)
-svm.fit(X_train_std, y_train)
+svm = SVC(kernel='linear', C=1.0, random_state=1) # 線形SVMのインスタンスを生成
+svm.fit(X_train_std, y_train) # 線形SVMモデルを訓練
 
+# 決定領域をプロット
 plot_decision_regions(X_combined_std, 
                       y_combined,
                       classifier=svm, 
@@ -527,9 +567,9 @@ plt.show()
 
 
 
-ppn = SGDClassifier(loss='perceptron')
-lr = SGDClassifier(loss='log')
-svm = SGDClassifier(loss='hinge')
+ppn = SGDClassifier(loss='perceptron') # SGDバージョンのパーセプトロン
+lr = SGDClassifier(loss='log') # SGDバージョンのロジスティック回帰
+svm = SGDClassifier(loss='hinge') # SGDバージョンのSVM（損失関数=ヒンジ損失）
 
 
 
