@@ -22,19 +22,19 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import SelectFromModel
 
-# # Machine Learning with PyTorch and Scikit-Learn  
-# # -- Code Examples
+# # PyTorchとScikit-Learnによる機械学習
+# # -- コード例集
 
-# ## Package version checks
+# ## パッケージバージョンチェック
 
-# Add folder to path in order to load from the check_packages.py script:
+# check_packages.pyスクリプトから読み込むためにフォルダをパスに追加：
 
 
 
 sys.path.insert(0, '..')
 
 
-# Check recommended package versions:
+# 推奨パッケージバージョンをチェック：
 
 
 
@@ -49,39 +49,39 @@ d = {
 check_packages(d)
 
 
-# # Chapter 4 - Building Good Training Datasets – Data Preprocessing
+# # 第4章 - 良い訓練データセットの構築 – データ前処理
 
 
-# ### Overview
+# ### 概要
 
-# - [Dealing with missing data](#Dealing-with-missing-data)
-#   - [Identifying missing values in tabular data](#Identifying-missing-values-in-tabular-data)
-#   - [Eliminating training examples or features with missing values](#Eliminating-training-examples-or-features-with-missing-values)
-#   - [Imputing missing values](#Imputing-missing-values)
-#   - [Understanding the scikit-learn estimator API](#Understanding-the-scikit-learn-estimator-API)
-# - [Handling categorical data](#Handling-categorical-data)
-#   - [Nominal and ordinal features](#Nominal-and-ordinal-features)
-#   - [Mapping ordinal features](#Mapping-ordinal-features)
-#   - [Encoding class labels](#Encoding-class-labels)
-#   - [Performing one-hot encoding on nominal features](#Performing-one-hot-encoding-on-nominal-features)
-# - [Partitioning a dataset into a separate training and test set](#Partitioning-a-dataset-into-seperate-training-and-test-sets)
-# - [Bringing features onto the same scale](#Bringing-features-onto-the-same-scale)
-# - [Selecting meaningful features](#Selecting-meaningful-features)
-#   - [L1 and L2 regularization as penalties against model complexity](#L1-and-L2-regularization-as-penalties-against-model-omplexity)
-#   - [A geometric interpretation of L2 regularization](#A-geometric-interpretation-of-L2-regularization)
-#   - [Sparse solutions with L1 regularization](#Sparse-solutions-with-L1-regularization)
-#   - [Sequential feature selection algorithms](#Sequential-feature-selection-algorithms)
-# - [Assessing feature importance with Random Forests](#Assessing-feature-importance-with-Random-Forests)
-# - [Summary](#Summary)
-
-
-
+# - [欠損データの処理](#欠損データの処理)
+#   - [表形式データでの欠損値の識別](#表形式データでの欠損値の識別)
+#   - [欠損値を持つ訓練例や特徴量の除去](#欠損値を持つ訓練例や特徴量の除去)
+#   - [欠損値の補完](#欠損値の補完)
+#   - [scikit-learn推定器APIの理解](#scikit-learn推定器APIの理解)
+# - [カテゴリカルデータの処理](#カテゴリカルデータの処理)
+#   - [名義特徴量と順序特徴量](#名義特徴量と順序特徴量)
+#   - [順序特徴量のマッピング](#順序特徴量のマッピング)
+#   - [クラスラベルのエンコーディング](#クラスラベルのエンコーディング)
+#   - [名義特徴量でのワンホットエンコーディング](#名義特徴量でのワンホットエンコーディング)
+# - [データセットを別々の訓練セットとテストセットに分割](#データセットを別々の訓練セットとテストセットに分割)
+# - [特徴量を同じスケールに合わせる](#特徴量を同じスケールに合わせる)
+# - [意味のある特徴量の選択](#意味のある特徴量の選択)
+#   - [モデル複雑さに対するペナルティとしてのL1・L2正則化](#モデル複雑さに対するペナルティとしてのL1・L2正則化)
+#   - [L2正則化の幾何学的解釈](#L2正則化の幾何学的解釈)
+#   - [L1正則化によるスパース解](#L1正則化によるスパース解)
+#   - [逐次特徴選択アルゴリズム](#逐次特徴選択アルゴリズム)
+# - [ランダムフォレストによる特徴量重要度の評価](#ランダムフォレストによる特徴量重要度の評価)
+# - [まとめ](#まとめ)
 
 
 
-# # Dealing with missing data
 
-# ## Identifying missing values in tabular data
+
+
+# # 欠損データの処理
+
+# ## 表形式データでの欠損値の識別
 
 
 
@@ -115,7 +115,7 @@ df.values
 
 
 
-# ## Eliminating training examples or features with missing values
+# ## 欠損値を持つ訓練例や特徴量の除去
 
 
 
@@ -160,7 +160,7 @@ df.dropna(subset=['C'])
 
 
 
-# ## Imputing missing values
+# ## 欠損値の補完
 
 
 
@@ -185,7 +185,7 @@ imputed_data
 df.fillna(df.mean())
 
 
-# ## Understanding the scikit-learn estimator API
+# ## scikit-learn推定器APIの理解
 
 
 
@@ -196,9 +196,9 @@ df.fillna(df.mean())
 
 
 
-# # Handling categorical data
+# # カテゴリカルデータの処理
 
-# ## Nominal and ordinal features
+# ## 名義特徴量と順序特徴量
 
 
 
@@ -212,7 +212,7 @@ df
 
 
 
-# ## Mapping ordinal features
+# ## 順序特徴量のマッピング
 
 
 
@@ -231,7 +231,7 @@ df['size'].map(inv_size_mapping)
 
 
 
-# ## Encoding class labels
+# ## クラスラベルのエンコーディング
 
 
 
@@ -273,7 +273,7 @@ class_le.inverse_transform(y)
 
 
 
-# ## Performing one-hot encoding on nominal features
+# ## 名義特徴量でのワンホットエンコーディング
 
 
 
@@ -325,9 +325,9 @@ c_transf.fit_transform(X).astype(float)
 
 
 
-# ## Optional: Encoding Ordinal Features
+# ## オプション：順序特徴量のエンコーディング
 
-# If we are unsure about the numerical differences between the categories of ordinal features, or the difference between two ordinal values is not defined, we can also encode them using a threshold encoding with 0/1 values. For example, we can split the feature "size" with values M, L, and XL into two new features "x > M" and "x > L". Let's consider the original DataFrame:
+# 順序特徴量のカテゴリ間の数値的な違いが不明な場合、または2つの順序値間の差が定義されていない場合、0/1値を使用した閾値エンコーディングでエンコードすることもできます。例えば、M、L、XLの値を持つ「size」特徴量を「x > M」と「x > L」の2つの新しい特徴量に分割することができます。元のDataFrameを考えてみましょう：
 
 
 
@@ -339,7 +339,7 @@ df.columns = ['color', 'size', 'price', 'classlabel']
 df
 
 
-# We can use the `apply` method of pandas' DataFrames to write custom lambda expressions in order to encode these variables using the value-threshold approach:
+# pandasのDataFrameの`apply`メソッドを使用して、値閾値アプローチを使用してこれらの変数をエンコードするために、カスタムラムダ式を記述できます：
 
 
 
@@ -351,7 +351,7 @@ df
 
 
 
-# # Partitioning a dataset into a separate training and test set
+# # データセットを別々の訓練セットとテストセットに分割
 
 
 
@@ -389,7 +389,7 @@ X_train, X_test, y_train, y_test =\
 
 
 
-# # Bringing features onto the same scale
+# # 特徴量を同じスケールに合わせる
 
 
 
@@ -407,7 +407,7 @@ X_train_std = stdsc.fit_transform(X_train)
 X_test_std = stdsc.transform(X_test)
 
 
-# A visual example:
+# 視覚的な例：
 
 
 
@@ -424,15 +424,13 @@ print('normalized:', (ex - ex.min()) / (ex.max() - ex.min()))
 
 
 
-# # Selecting meaningful features
+# # 意味のある特徴量の選択
 
 # ...
 
-# ## L1 and L2 regularization as penalties against model complexity
+# ## モデル複雑さに対するペナルティとしてのL1・L2正則化
 
-# ## A geometric interpretation of L2 regularization
-
-
+# ## L2正則化の幾何学的解釈
 
 
 
@@ -440,13 +438,15 @@ print('normalized:', (ex - ex.min()) / (ex.max() - ex.min()))
 
 
 
-# ## Sparse solutions with L1-regularization
+
+
+# ## L1正則化によるスパース解
 
 
 
 
 
-# For regularized models in scikit-learn that support L1 regularization, we can simply set the `penalty` parameter to `'l1'` to obtain a sparse solution:
+# L1正則化をサポートするscikit-learnの正則化モデルでは、`penalty`パラメータを`'l1'`に設定するだけで、スパース解を得ることができます：
 
 
 
@@ -454,7 +454,7 @@ print('normalized:', (ex - ex.min()) / (ex.max() - ex.min()))
 LogisticRegression(penalty='l1')
 
 
-# Applied to the standardized Wine data ...
+# 標準化されたWineデータに適用...
 
 
 
@@ -530,7 +530,7 @@ plt.show()
 
 
 
-# ## Sequential feature selection algorithms
+# ## 逐次特徴選択アルゴリズム
 
 
 
@@ -631,7 +631,7 @@ print('Test accuracy:', knn.score(X_test_std[:, k3], y_test))
 
 
 
-# # Assessing feature importance with Random Forests
+# # ランダムフォレストによる特徴量重要度の評価
 
 
 
@@ -673,7 +673,7 @@ print('Number of features that meet this threshold criterion:',
       X_selected.shape[1])
 
 
-# Now, let's print the 3 features that met the threshold criterion for feature selection that we set earlier (note that this code snippet does not appear in the actual book but was added to this notebook later for illustrative purposes):
+# ここで、先ほど設定した特徴選択の閾値基準を満たした3つの特徴量を出力してみましょう（注意：このコードスニペットは実際の書籍には載っていませんが、説明目的で後からこのノートブックに追加されました）：
 
 
 
@@ -684,13 +684,13 @@ for f in range(X_selected.shape[1]):
 
 
 
-# # Summary
+# # まとめ
 
 # ...
 
 # ---
 # 
-# Readers may ignore the next cell.
+# 読者は次のセルを無視してください。
 
 
 
