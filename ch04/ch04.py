@@ -85,19 +85,20 @@ check_packages(d)
 
 
 
-
+# サンプルデータを作成
 csv_data = \
 '''A,B,C,D
 1.0,2.0,3.0,4.0
 5.0,6.0,,8.0
 10.0,11.0,12.0,'''
 
-# If you are using Python 2.7, you need
-# to convert the string to unicode:
+# Python 2.7を使用している場合は、
+# 文字列をunicodeに変換する必要があります：
 
 if (sys.version_info < (3, 0)):
     csv_data = unicode(csv_data)
 
+# サンプルデータを読み込む
 df = pd.read_csv(StringIO(csv_data))
 df
 
@@ -109,8 +110,8 @@ df.isnull().sum()
 
 
 
-# access the underlying NumPy array
-# via the `values` attribute
+# 基礎となるNumPy配列にアクセス
+# `values`属性を使用
 df.values
 
 
@@ -119,42 +120,36 @@ df.values
 
 
 
-# remove rows that contain missing values
+# 欠損値を含む行を除去
 
 df.dropna(axis=0)
 
 
 
 
-# remove columns that contain missing values
+# 引数を1にして欠損値を含む列を除去
 
 df.dropna(axis=1)
 
 
 
 
-# remove columns that contain missing values
+# すべての列がNaNの行のみを除去
+# この場合は値がNaNである行は無いため、配列全体が返される
 
-df.dropna(axis=1)
-
-
-
-
-# only drop rows where all columns are NaN
-
-df.dropna(how='all')  
+df.dropna(how='all')
 
 
 
 
-# drop rows that have fewer than 3 real values 
+# 実際の値が4個未満の行を除去
 
 df.dropna(thresh=4)
 
 
 
 
-# only drop rows where NaN appear in specific columns (here: 'C')
+# 特定の列（ここでは'C'）でNaNが出現する行のみを除去
 
 df.dropna(subset=['C'])
 
@@ -164,13 +159,13 @@ df.dropna(subset=['C'])
 
 
 
-# again: our original array
+# 再度：元の配列
 df.values
 
 
 
 
-# impute missing values via the column mean
+# 列の平均値による欠損値の補完
 
 
 imr = SimpleImputer(missing_values=np.nan, strategy='mean')
@@ -236,22 +231,21 @@ df['size'].map(inv_size_mapping)
 
 
 
-# create a mapping dict
-# to convert class labels from strings to integers
+# クラスラベルを文字列から整数に変換するためのマッピング辞書を作成
 class_mapping = {label: idx for idx, label in enumerate(np.unique(df['classlabel']))}
 class_mapping
 
 
 
 
-# to convert class labels from strings to integers
+# クラスラベルを文字列から整数に変換
 df['classlabel'] = df['classlabel'].map(class_mapping)
 df
 
 
 
 
-# reverse the class label mapping
+# クラスラベルマッピングを逆変換
 inv_class_mapping = {v: k for k, v in class_mapping.items()}
 df['classlabel'] = df['classlabel'].map(inv_class_mapping)
 df
@@ -260,7 +254,7 @@ df
 
 
 
-# Label encoding with sklearn's LabelEncoder
+# scikit-learnのLabelEncoderによるラベルエンコーディング
 class_le = LabelEncoder()
 y = class_le.fit_transform(df['classlabel'].values)
 y
@@ -268,7 +262,7 @@ y
 
 
 
-# reverse mapping
+# 逆マッピング
 class_le.inverse_transform(y)
 
 
@@ -302,21 +296,21 @@ c_transf.fit_transform(X).astype(float)
 
 
 
-# one-hot encoding via pandas
+# pandasによるワンホットエンコーディング
 
 pd.get_dummies(df[['price', 'color', 'size']])
 
 
 
 
-# multicollinearity guard in get_dummies
+# get_dummiesでの多重共線性対策
 
 pd.get_dummies(df[['price', 'color', 'size']], drop_first=True)
 
 
 
 
-# multicollinearity guard for the OneHotEncoder
+# OneHotEncoderでの多重共線性対策
 
 color_ohe = OneHotEncoder(categories='auto', drop='first')
 c_transf = ColumnTransformer([ ('onehot', color_ohe, [0]),
@@ -359,9 +353,8 @@ df_wine = pd.read_csv('https://archive.ics.uci.edu/'
                       'ml/machine-learning-databases/wine/wine.data',
                       header=None)
 
-# if the Wine dataset is temporarily unavailable from the
-# UCI machine learning repository, un-comment the following line
-# of code to load the dataset from a local path:
+# UCI機械学習リポジトリからWineデータセットが一時的に利用できない場合は、
+# 以下のコード行のコメントを外してローカルパスからデータセットを読み込んでください：
 
 # df_wine = pd.read_csv('wine.data', header=None)
 
@@ -415,11 +408,10 @@ ex = np.array([0, 1, 2, 3, 4, 5])
 
 print('standardized:', (ex - ex.mean()) / ex.std())
 
-# Please note that pandas uses ddof=1 (sample standard deviation) 
-# by default, whereas NumPy's std method and the StandardScaler
-# uses ddof=0 (population standard deviation)
+# pandasはデフォルトでddof=1（標本標準偏差）を使用することに注意してください。
+# 一方、NumPyのstdメソッドとStandardScalerはddof=0（母集団標準偏差）を使用します。
 
-# normalize
+# 正規化
 print('normalized:', (ex - ex.min()) / (ex.max() - ex.min()))
 
 
@@ -460,9 +452,8 @@ LogisticRegression(penalty='l1')
 
 
 lr = LogisticRegression(penalty='l1', C=1.0, solver='liblinear', multi_class='ovr')
-# Note that C=1.0 is the default. You can increase
-# or decrease it to make the regulariztion effect
-# weaker or stronger, respectively.
+# C=1.0がデフォルトであることに注意してください。この値を増加または減少させることで、
+# それぞれ正則化効果を弱くしたり強くしたりできます。
 lr.fit(X_train_std, y_train)
 print('Training accuracy:', lr.score(X_train_std, y_train))
 print('Test accuracy:', lr.score(X_test_std, y_test))
@@ -593,11 +584,11 @@ class SBS:
 
 knn = KNeighborsClassifier(n_neighbors=5)
 
-# selecting features
+# 特徴量の選択
 sbs = SBS(knn, k_features=1)
 sbs.fit(X_train_std, y_train)
 
-# plotting performance of feature subsets
+# 特徴量サブセットのパフォーマンスをプロット
 k_feat = [len(k) for k in sbs.subsets_]
 
 plt.plot(k_feat, sbs.scores_, marker='o')
