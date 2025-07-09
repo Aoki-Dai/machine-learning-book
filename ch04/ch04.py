@@ -167,9 +167,11 @@ df.values
 
 # 列の平均値による欠損値の補完
 
-
+# 欠損値補完のインスタンスを作成（平均値補完）
 imr = SimpleImputer(missing_values=np.nan, strategy='mean')
+# imrをデータに適合させる
 imr = imr.fit(df.values)
+# 補完を実行
 imputed_data = imr.transform(df.values)
 imputed_data
 
@@ -177,6 +179,7 @@ imputed_data
 
 
 
+# pandasのfillna()メソッドを使用して、列の平均値で欠損値を補完することもできます
 df.fillna(df.mean())
 
 
@@ -197,11 +200,11 @@ df.fillna(df.mean())
 
 
 
-
+# サンプルデータを生成（Tシャツの色、サイズ、価格、クラスラベル）
 df = pd.DataFrame([['green', 'M', 10.1, 'class2'],
                    ['red', 'L', 13.5, 'class1'],
                    ['blue', 'XL', 15.3, 'class2']])
-
+# 列名を設定
 df.columns = ['color', 'size', 'price', 'classlabel']
 df
 
@@ -211,16 +214,18 @@ df
 
 
 
+# Tシャツのサイズと整数に対応させるディクショナリを作成
 size_mapping = {'XL': 3,
                 'L': 2,
                 'M': 1}
-
+# ディクショナリを使用してサイズを整数に変換
 df['size'] = df['size'].map(size_mapping)
 df
 
 
 
 
+# 整数値を元のサイズに戻すためのディクショナリを作成
 inv_size_mapping = {v: k for k, v in size_mapping.items()}
 df['size'].map(inv_size_mapping)
 
@@ -245,8 +250,9 @@ df
 
 
 
-# クラスラベルマッピングを逆変換
+# 整数とクラスラベルを対応させるディクショナリを作成
 inv_class_mapping = {v: k for k, v in class_mapping.items()}
+# 整数から元のクラスラベルに戻す
 df['classlabel'] = df['classlabel'].map(inv_class_mapping)
 df
 
@@ -256,13 +262,14 @@ df
 
 # scikit-learnのLabelEncoderによるラベルエンコーディング
 class_le = LabelEncoder()
+# クラスラベルから整数に変換
 y = class_le.fit_transform(df['classlabel'].values)
 y
 
 
 
 
-# 逆マッピング
+# inverse_transformを使用して整数から元のクラスラベルに戻す
 class_le.inverse_transform(y)
 
 
@@ -271,17 +278,22 @@ class_le.inverse_transform(y)
 
 
 
-X = df[['color', 'size', 'price']].values
+X = df[['color', 'size', 'price']].values # Tシャツの色、サイズ、価格の列を取得
 color_le = LabelEncoder()
 X[:, 0] = color_le.fit_transform(X[:, 0])
 X
+# blue→0, green→1, red→2
 
 
 
+
+# ダミー特徴量
 
 
 X = df[['color', 'size', 'price']].values
+# one-hotエンコーダを生成
 color_ohe = OneHotEncoder()
+# one-hotエンコーティングを実行
 color_ohe.fit_transform(X[:, 0].reshape(-1, 1)).toarray()
 
 
@@ -289,14 +301,17 @@ color_ohe.fit_transform(X[:, 0].reshape(-1, 1)).toarray()
 
 
 X = df[['color', 'size', 'price']].values
+# 列0をone-hotエンコードし、列1と列2はそのまま
 c_transf = ColumnTransformer([ ('onehot', OneHotEncoder(), [0]),
                                ('nothing', 'passthrough', [1, 2])])
+# エンコードされたデータをfloat型に変換
 c_transf.fit_transform(X).astype(float)
 
 
 
 
 # pandasによるワンホットエンコーディング
+# 文字列値を持つ列だけを変換
 
 pd.get_dummies(df[['price', 'color', 'size']])
 
