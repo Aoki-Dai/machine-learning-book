@@ -319,15 +319,17 @@ pd.get_dummies(df[['price', 'color', 'size']])
 
 
 # get_dummiesでの多重共線性対策
-
+# drop_first=Trueで最初のダミー変数を削除
 pd.get_dummies(df[['price', 'color', 'size']], drop_first=True)
 
 
 
 
 # OneHotEncoderでの多重共線性対策
-
+# one-hotエンコーダを生成
+# drop='first'で最初のダミー変数を削除
 color_ohe = OneHotEncoder(categories='auto', drop='first')
+# 列0をone-hotエンコードし、列1と列2はそのまま
 c_transf = ColumnTransformer([ ('onehot', color_ohe, [0]),
                                ('nothing', 'passthrough', [1, 2])])
 c_transf.fit_transform(X).astype(float)
@@ -340,10 +342,11 @@ c_transf.fit_transform(X).astype(float)
 
 
 
+# データフレームの作成
 df = pd.DataFrame([['green', 'M', 10.1, 'class2'],
                    ['red', 'L', 13.5, 'class1'],
                    ['blue', 'XL', 15.3, 'class2']])
-
+# 列名を設定
 df.columns = ['color', 'size', 'price', 'classlabel']
 df
 
@@ -352,10 +355,10 @@ df
 
 
 
-df['x > M'] = df['size'].apply(lambda x: 1 if x in {'L', 'XL'} else 0)
-df['x > L'] = df['size'].apply(lambda x: 1 if x == 'XL' else 0)
+df['x > M'] = df['size'].apply(lambda x: 1 if x in {'L', 'XL'} else 0) # サイズがMより大きいかどうか
+df['x > L'] = df['size'].apply(lambda x: 1 if x == 'XL' else 0) # サイズがLより大きいかどうか
 
-del df['size']
+del df['size'] # サイズ列を削除
 df
 
 
@@ -364,6 +367,7 @@ df
 
 
 
+# Wineデータセットの読み込み
 df_wine = pd.read_csv('https://archive.ics.uci.edu/'
                       'ml/machine-learning-databases/wine/wine.data',
                       header=None)
@@ -373,22 +377,26 @@ df_wine = pd.read_csv('https://archive.ics.uci.edu/'
 
 # df_wine = pd.read_csv('wine.data', header=None)
 
-
+# 列名を設定
 df_wine.columns = ['Class label', 'Alcohol', 'Malic acid', 'Ash',
                    'Alcalinity of ash', 'Magnesium', 'Total phenols',
                    'Flavanoids', 'Nonflavanoid phenols', 'Proanthocyanins',
                    'Color intensity', 'Hue', 'OD280/OD315 of diluted wines',
                    'Proline']
-
+# クラスラベルの一意の値を表示
 print('Class labels', np.unique(df_wine['Class label']))
+# Wineデータフレームの先頭5行を表示
 df_wine.head()
 
 
+# Wineデータセットの13種類の特徴量は、178のワインサンプルの化学的性質を表している
 
 
 
+# データセットを訓練データとテストデータにランダムに分割する便利な関数train_test_splitをインポート
+# 特徴量とクラスラベルを別々に抽出
 X, y = df_wine.iloc[:, 1:].values, df_wine.iloc[:, 0].values
-
+# 訓練データとテストデータに分割（全体の30%をテストデータとする）
 X_train, X_test, y_train, y_test =\
     train_test_split(X, y, 
                      test_size=0.3, 
@@ -401,9 +409,11 @@ X_train, X_test, y_train, y_test =\
 
 
 
-
+# mim-maxスケーリングのインスタンスを作成
 mms = MinMaxScaler()
+# 訓練データをスケーリング
 X_train_norm = mms.fit_transform(X_train)
+# テストデータをスケーリング
 X_test_norm = mms.transform(X_test)
 
 
