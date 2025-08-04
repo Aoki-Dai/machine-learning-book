@@ -512,14 +512,16 @@ lr.coef_
 
 
 
+# 描画の準備
 fig = plt.figure()
 ax = plt.subplot(111)
-    
+# 各係数の色のリスト
 colors = ['blue', 'green', 'red', 'cyan', 
           'magenta', 'yellow', 'black', 
           'pink', 'lightgreen', 'lightblue', 
           'gray', 'indigo', 'orange']
 
+# 空のリストを生成(重み係数、逆正則化パラメータCの値)
 weights, params = [], []
 for c in np.arange(-4., 6.):
     lr = LogisticRegression(penalty='l1', C=10.**c, solver='liblinear', 
@@ -528,16 +530,24 @@ for c in np.arange(-4., 6.):
     weights.append(lr.coef_[1])
     params.append(10**c)
 
+# 重み係数の配列をNumPy配列に変換
 weights = np.array(weights)
 
+# 各重み係数をプロット
 for column, color in zip(range(weights.shape[1]), colors):
+    # 横軸を逆正則化パラメータCの値、縦軸を重み係数に設定した折れ線グラフ
     plt.plot(params, weights[:, column],
              label=df_wine.columns[column + 1],
              color=color)
+    
+# y = 0 に黒い波線を引く
 plt.axhline(0, color='black', linestyle='--', linewidth=3)
+# 横軸の範囲の設定
 plt.xlim([10**(-5), 10**5])
+# 軸ラベルの設定
 plt.ylabel('Weight coefficient')
 plt.xlabel('C (inverse regularization strength)')
+# 横軸を対数スケールに設定
 plt.xscale('log')
 plt.legend(loc='upper left')
 ax.legend(loc='upper center', 
@@ -556,55 +566,67 @@ plt.show()
 
 
 
-
+# 逐次後退選択を実行するクラスSBSを定義
 class SBS:
     def __init__(self, estimator, k_features, scoring=accuracy_score,
                  test_size=0.25, random_state=1):
-        self.scoring = scoring
-        self.estimator = clone(estimator)
-        self.k_features = k_features
-        self.test_size = test_size
-        self.random_state = random_state
+        self.scoring = scoring # 特徴量を評価する指標
+        self.estimator = clone(estimator) # 推定器
+        self.k_features = k_features # 最終的に選択する特徴量の数
+        self.test_size = test_size # テストデータの割合
+        self.random_state = random_state # 乱数シード
 
     def fit(self, X, y):
-        
-        X_train, X_test, y_train, y_test = \
-            train_test_split(X, y, test_size=self.test_size,
-                             random_state=self.random_state)
-
+        # データセットを訓練データとテストデータに分割
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=self.test_size, random_state=self.random_state)
+        # 全ての特徴量の個数、列インデックス
         dim = X_train.shape[1]
         self.indices_ = tuple(range(dim))
         self.subsets_ = [self.indices_]
+        # 全ての特徴量を使用してスコアを計算
         score = self._calc_score(X_train, y_train, 
                                  X_test, y_test, self.indices_)
-        self.scores_ = [score]
-
+        self.scores_ = [score] # スコアを格納
+        
+        # 特徴量が指定した個数になるまでループ
         while dim > self.k_features:
-            scores = []
-            subsets = []
-
+            scores = [] # 空のスコアリストを作成
+            subsets = [] # 空の列インデックスリストを作成
+            # 特徴量の部分集合を表す列インデックスの組み合わせ毎に処理を反復
             for p in combinations(self.indices_, r=dim - 1):
+                # スコアを算出して格納
                 score = self._calc_score(X_train, y_train, 
                                          X_test, y_test, p)
                 scores.append(score)
+                # 特徴量の部分集合を表す列インデックスのリストを格納
                 subsets.append(p)
 
+            # 最良のスコアのインデックスを抽出
             best = np.argmax(scores)
+            # 最良のスコアとなる列インデックスを抽出して格納
             self.indices_ = subsets[best]
             self.subsets_.append(self.indices_)
+            # 特徴量の個数を一つだけ減らして次のステップへ
             dim -= 1
 
+            # スコアを格納
             self.scores_.append(scores[best])
+        # 最後に格納したスコア
         self.k_score_ = self.scores_[-1]
 
         return self
 
     def transform(self, X):
+        # 抽出した特徴量を返す
         return X[:, self.indices_]
 
     def _calc_score(self, X_train, y_train, X_test, y_test, indices):
+        # 指定された列番号indicesの特徴量を抽出してモデルを適合
         self.estimator.fit(X_train[:, indices], y_train)
+        # テストデータを用いてクラスラベルを予測
         y_pred = self.estimator.predict(X_test[:, indices])
+        # クラスラベルの正解値と予測値を用いてスコアを算出
         score = self.scoring(y_test, y_pred)
         return score
 
