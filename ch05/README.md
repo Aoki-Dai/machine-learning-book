@@ -1,25 +1,25 @@
 
-##  Chapter 5: Compressing Data via Dimensionality Reduction
+##  第5章: 次元削減によるデータ圧縮
 
-### Chapter Outline
+### 章の概要
 
-- Unsupervised dimensionality reduction via principal component analysis
-  - The main steps behind principal component analysis
-  - Extracting the principal components step by step
-  - Total and explained variance
-  - Feature transformation
-  - Principal component analysis in scikit-learn
-- Supervised data compression via linear discriminant analysis
-  - Principal component analysis versus linear discriminant analysis
-  - The inner workings of linear discriminant analysis
-  - Computing the scatter matrices
-  - Selecting linear discriminants for the new feature subspace
-  - Projecting samples onto the new feature space
-  - LDA via scikit-learn
-- Nonlinear dimensionality reduction techniques
-  - Visualizing data via t-distributed stochastic neighbor embedding
-- Summary
+- 主成分分析による教師なし次元削減
+  - 主成分分析の背後にある主要なステップ
+  - 主成分をステップバイステップで抽出
+  - 全分散と寄与分散
+  - 特徴変換
+  - scikit-learnでの主成分分析
+- 線形判別分析による教師ありデータ圧縮
+  - 主成分分析と線形判別分析の比較
+  - 線形判別分析の内部動作
+  - 散布行列の計算
+  - 新しい特徴部分空間のための線形判別の選択
+  - 新しい特徴空間へのサンプルの投影
+  - scikit-learnによるLDA
+- 非線形次元削減技術
+  - t-分散確率的近傍埋め込みによるデータ可視化
+- まとめ
 
 
 
-**Please refer to the [README.md](../ch01/README.md) file in [`../ch01`](../ch01) for more information about running the code examples.**
+**コード例の実行に関する詳細情報については、[`../ch01`](../ch01)の[README.md](../ch01/README.md)ファイルを参照してください。**
