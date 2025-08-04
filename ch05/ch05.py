@@ -16,19 +16,19 @@ from sklearn.datasets import load_digits
 from sklearn.manifold import TSNE
 import matplotlib.patheffects as PathEffects
 
-# # Machine Learning with PyTorch and Scikit-Learn  
-# # -- Code Examples
+# # PyTorchとScikit-Learnによる機械学習  
+# # -- コード例
 
-# ## Package version checks
+# ## パッケージのバージョンチェック
 
-# Add folder to path in order to load from the check_packages.py script:
+# check_packages.pyスクリプトから読み込むためにフォルダをパスに追加:
 
 
 
 sys.path.insert(0, '..')
 
 
-# Check recommended package versions:
+# 推奨パッケージバージョンをチェック:
 
 
 
@@ -43,43 +43,43 @@ d = {
 check_packages(d)
 
 
-# # Chapter 5 - Compressing Data via Dimensionality Reduction
+# # 第5章 - 次元削減によるデータ圧縮
 
 
-# ### Overview
+# ### 概要
 
-# - [Unsupervised dimensionality reduction via principal component analysis 128](#Unsupervised-dimensionality-reduction-via-principal-component-analysis-128)
-#   - [The main steps behind principal component analysis](#The-main-steps-behind-principal-component-analysis)
-#   - [Extracting the principal components step-by-step](#Extracting-the-principal-components-step-by-step)
-#   - [Total and explained variance](#Total-and-explained-variance)
-#   - [Feature transformation](#Feature-transformation)
-#   - [Principal component analysis in scikit-learn](#Principal-component-analysis-in-scikit-learn)
-#   - [Assessing feature contributions](#Assessing-feature-contributions)
-# - [Supervised data compression via linear discriminant analysis](#Supervised-data-compression-via-linear-discriminant-analysis)
-#   - [Principal component analysis versus linear discriminant analysis](#Principal-component-analysis-versus-linear-discriminant-analysis)
-#   - [The inner workings of linear discriminant analysis](#The-inner-workings-of-linear-discriminant-analysis)
-#   - [Computing the scatter matrices](#Computing-the-scatter-matrices)
-#   - [Selecting linear discriminants for the new feature subspace](#Selecting-linear-discriminants-for-the-new-feature-subspace)
-#   - [Projecting examples onto the new feature space](#Projecting-examples-onto-the-new-feature-space)
-#   - [LDA via scikit-learn](#LDA-via-scikit-learn)
-# - [Nonlinear dimensionality reduction techniques](#Nonlinear-dimensionality-reduction-techniques)
-#   - [Visualizing data via t-distributed stochastic neighbor embedding](#Visualizing-data-via-t-distributed-stochastic-neighbor-embedding)
-# - [Summary](#Summary)
-
-
-
-
-
-
-# # Unsupervised dimensionality reduction via principal component analysis
-
-# ## The main steps behind principal component analysis
+# - [主成分分析による教師なし次元削減](#Unsupervised-dimensionality-reduction-via-principal-component-analysis)
+#   - [主成分分析の背後にある主要なステップ](#The-main-steps-behind-principal-component-analysis)
+#   - [主成分をステップバイステップで抽出](#Extracting-the-principal-components-step-by-step)
+#   - [全分散と寄与分散](#Total-and-explained-variance)
+#   - [特徴変換](#Feature-transformation)
+#   - [scikit-learnでの主成分分析](#Principal-component-analysis-in-scikit-learn)
+#   - [特徴の寄与の評価](#Assessing-feature-contributions)
+# - [線形判別分析による教師ありデータ圧縮](#Supervised-data-compression-via-linear-discriminant-analysis)
+#   - [主成分分析と線形判別分析の比較](#Principal-component-analysis-versus-linear-discriminant-analysis)
+#   - [線形判別分析の内部動作](#The-inner-workings-of-linear-discriminant-analysis)
+#   - [散布行列の計算](#Computing-the-scatter-matrices)
+#   - [新しい特徴部分空間のための線形判別の選択](#Selecting-linear-discriminants-for-the-new-feature-subspace)
+#   - [新しい特徴空間への例の投影](#Projecting-examples-onto-the-new-feature-space)
+#   - [scikit-learnによるLDA](#LDA-via-scikit-learn)
+# - [非線形次元削減技術](#Nonlinear-dimensionality-reduction-techniques)
+#   - [t-分散確率的近傍埋め込みによるデータ可視化](#Visualizing-data-via-t-distributed-stochastic-neighbor-embedding)
+# - [まとめ](#Summary)
 
 
 
 
 
-# ## Extracting the principal components step-by-step
+
+# # 主成分分析による教師なし次元削減
+
+# ## 主成分分析の背後にある主要なステップ
+
+
+
+
+
+# ## 主成分をステップバイステップで抽出
 
 
 
@@ -88,9 +88,9 @@ df_wine = pd.read_csv('https://archive.ics.uci.edu/ml/'
                       'machine-learning-databases/wine/wine.data',
                       header=None)
 
-# if the Wine dataset is temporarily unavailable from the
-# UCI machine learning repository, un-comment the following line
-# of code to load the dataset from a local path:
+# Wineデータセットが一時的にUCI機械学習リポジトリから
+# 利用できない場合は、以下のコード行のコメントを外して
+# ローカルパスからデータセットを読み込んでください:
 
 # df_wine = pd.read_csv('wine.data', header=None)
 
@@ -104,19 +104,20 @@ df_wine.head()
 
 
 
-# Splitting the data into 70% training and 30% test subsets.
+# データを70%の訓練用と30%のテスト用サブセットに分割。
 
 
 
 
 X, y = df_wine.iloc[:, 1:].values, df_wine.iloc[:, 0].values
 
-X_train, X_test, y_train, y_test =     train_test_split(X, y, test_size=0.3, 
+X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, test_size=0.3, 
                      stratify=y,
                      random_state=0)
 
 
-# Standardizing the data.
+# データの標準化。
 
 
 
@@ -128,49 +129,49 @@ X_test_std = sc.transform(X_test)
 
 # ---
 # 
-# **Note**
+# **注意**
 # 
-# Accidentally, I wrote `X_test_std = sc.fit_transform(X_test)` instead of `X_test_std = sc.transform(X_test)`. In this case, it wouldn't make a big difference since the mean and standard deviation of the test set should be (quite) similar to the training set. However, as remember from Chapter 3, the correct way is to re-use parameters from the training set if we are doing any kind of transformation -- the test set should basically stand for "new, unseen" data.
+# 誤って`X_test_std = sc.fit_transform(X_test)`を`X_test_std = sc.transform(X_test)`の代わりに書いてしまいました。この場合、テストセットの平均と標準偏差は訓練セットと（かなり）似ているはずなので、大きな違いはないでしょう。しかし、第3章で覚えているように、何らかの変換を行う場合の正しい方法は、訓練セットからのパラメータを再利用することです -- テストセットは基本的に「新しい、未知の」データを表すべきです。
 # 
-# My initial typo reflects a common mistake is that some people are *not* re-using these parameters from the model training/building and standardize the new data "from scratch." Here's simple example to explain why this is a problem.
+# 私の最初のタイポは、一部の人が*これらのパラメータをモデル訓練/構築から再利用せず*、新しいデータを「ゼロから」標準化するという一般的な間違いを反映しています。これがなぜ問題なのかを説明する簡単な例を示します。
 # 
-# Let's assume we have a simple training set consisting of 3 examples with 1 feature (let's call this feature "length"):
+# 1つの特徴（これを「長さ」と呼びましょう）を持つ3つの例からなる簡単な訓練セットがあると仮定しましょう：
 # 
 # - train_1: 10 cm -> class_2
 # - train_2: 20 cm -> class_2
 # - train_3: 30 cm -> class_1
 # 
-# mean: 20, std.: 8.2
+# 平均: 20, 標準偏差: 8.2
 # 
-# After standardization, the transformed feature values are
+# 標準化後、変換された特徴値は次のようになります：
 # 
 # - train_std_1: -1.21 -> class_2
 # - train_std_2: 0 -> class_2
 # - train_std_3: 1.21 -> class_1
 # 
-# Next, let's assume our model has learned to classify examples with a standardized length value < 0.6 as class_2 (class_1 otherwise). So far so good. Now, let's say we have 3 unlabeled data points that we want to classify:
+# 次に、モデルが標準化された長さの値 < 0.6をclass_2として分類することを学習したと仮定しましょう（そうでなければclass_1）。ここまでは問題ありません。今度は、分類したい3つのラベルなしデータポイントがあるとしましょう：
 # 
 # - new_4: 5 cm -> class ?
 # - new_5: 6 cm -> class ?
 # - new_6: 7 cm -> class ?
 # 
-# If we look at the "unstandardized "length" values in our training datast, it is intuitive to say that all of these examples are likely belonging to class_2. However, if we standardize these by re-computing standard deviation and and mean you would get similar values as before in the training set and your classifier would (probably incorrectly) classify examples 4 and 5 as class 2.
+# 訓練データセットの「標準化されていない長さ」の値を見ると、これらの例はすべてclass_2に属する可能性が高いと直感的に言えます。しかし、標準偏差と平均を再計算して標準化すると、訓練セットで以前と同様の値が得られ、分類器は（おそらく誤って）例4と5をclass_2として分類するでしょう。
 # 
-# - new_std_4: -1.21 -> class 2
-# - new_std_5: 0 -> class 2
-# - new_std_6: 1.21 -> class 1
+# - new_std_4: -1.21 -> class_2
+# - new_std_5: 0 -> class_2
+# - new_std_6: 1.21 -> class_1
 # 
-# However, if we use the parameters from your "training set standardization," we'd get the values:
+# しかし、「訓練セット標準化」からのパラメータを使用すると、次の値が得られます：
 # 
-# - example5: -18.37 -> class 2
-# - example6: -17.15 -> class 2
-# - example7: -15.92 -> class 2
+# - example5: -18.37 -> class_2
+# - example6: -17.15 -> class_2
+# - example7: -15.92 -> class_2
 # 
-# The values 5 cm, 6 cm, and 7 cm are much lower than anything we have seen in the training set previously. Thus, it only makes sense that the standardized features of the "new examples" are much lower than every standardized feature in the training set.
+# 値5 cm、6 cm、7 cmは、以前に訓練セットで見たものよりもはるかに低いものです。したがって、「新しい例」の標準化された特徴が訓練セットのすべての標準化された特徴よりもはるかに低いことは理にかなっています。
 # 
 # ---
 
-# Eigendecomposition of the covariance matrix.
+# 共分散行列の固有値分解。
 
 
 
@@ -180,15 +181,14 @@ eigen_vals, eigen_vecs = np.linalg.eig(cov_mat)
 print('\nEigenvalues \n', eigen_vals)
 
 
-# **Note**: 
+# **注意**: 
 # 
-# Above, I used the [`numpy.linalg.eig`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eig.html) function to decompose the symmetric covariance matrix into its eigenvalues and eigenvectors.
+# 上記では、対称共分散行列をその固有値と固有ベクトルに分解するために[`numpy.linalg.eig`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eig.html)関数を使用しました。
 #     <pre>>>> eigen_vals, eigen_vecs = np.linalg.eig(cov_mat)</pre>
-#     This is not really a "mistake," but probably suboptimal. It would be better to use [`numpy.linalg.eigh`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) in such cases, which has been designed for [Hermetian matrices](https://en.wikipedia.org/wiki/Hermitian_matrix). The latter always returns real  eigenvalues; whereas the numerically less stable `np.linalg.eig` can decompose nonsymmetric square matrices, you may find that it returns complex eigenvalues in certain cases. (S.R.)
-# 
+#     これは本当に「間違い」ではありませんが、おそらく最適ではありません。このような場合には[`numpy.linalg.eigh`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html)を使用する方が良いでしょう。これは[エルミート行列](https://en.wikipedia.org/wiki/Hermitian_matrix)用に設計されています。後者は常に実固有値を返しますが、数値的に安定性の低い`np.linalg.eig`は非対称正方行列を分解できるため、特定の場合には複素固有値を返すことがあります。(S.R.)
 
 
-# ## Total and explained variance
+# ## 全分散と寄与分散
 
 
 
@@ -214,15 +214,15 @@ plt.show()
 
 
 
-# ## Feature transformation
+# ## 特徴変換
 
 
 
-# Make a list of (eigenvalue, eigenvector) tuples
+# (固有値, 固有ベクトル)のタプルのリストを作成
 eigen_pairs = [(np.abs(eigen_vals[i]), eigen_vecs[:, i])
                for i in range(len(eigen_vals))]
 
-# Sort the (eigenvalue, eigenvector) tuples from high to low
+# (固有値, 固有ベクトル)のタプルを大きいものから小さいものへソート
 eigen_pairs.sort(key=lambda k: k[0], reverse=True)
 
 
@@ -233,15 +233,15 @@ w = np.hstack((eigen_pairs[0][1][:, np.newaxis],
 print('Matrix W:\n', w)
 
 
-# **Note**
-# Depending on which version of NumPy and LAPACK you are using, you may obtain the Matrix W with its signs flipped. Please note that this is not an issue: If $v$ is an eigenvector of a matrix $\Sigma$, we have
+# **注意**
+# 使用しているNumPyとLAPACKのバージョンによって、行列Wの符号が反転して得られる場合があります。これは問題ではないことに注意してください：$v$が行列$\Sigma$の固有ベクトルの場合、
 # 
 # $$\Sigma v = \lambda v,$$
 # 
-# where $\lambda$ is our eigenvalue,
+# ここで$\lambda$は固有値です。
 # 
 # 
-# then $-v$ is also an eigenvector that has the same eigenvalue, since
+# すると$-v$も同じ固有値を持つ固有ベクトルになります：
 # $$\Sigma \cdot (-v) = -\Sigma v = -\lambda v = \lambda \cdot (-v).$$
 
 
@@ -269,11 +269,11 @@ plt.show()
 
 
 
-# ## Principal component analysis in scikit-learn
+# ## scikit-learnでの主成分分析
 
-# **NOTE**
+# **注意**
 # 
-# The following four code cells has been added in addition to the content to the book, to illustrate how to replicate the results from our own PCA implementation in scikit-learn:
+# 以下の4つのコードセルは、本の内容に加えて追加されたもので、scikit-learnで独自のPCA実装からの結果を再現する方法を説明するためのものです：
 
 
 
@@ -313,12 +313,12 @@ plt.show()
 
 def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
 
-    # setup marker generator and color map
+    # マーカー生成器とカラーマップの設定
     markers = ('o', 's', '^', 'v', '<')
     colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
     cmap = ListedColormap(colors[:len(np.unique(y))])
 
-    # plot the decision surface
+    # 決定境界面をプロット
     x1_min, x1_max = X[:, 0].min() - 1, X[:, 0].max() + 1
     x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
     xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution),
@@ -329,7 +329,7 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
     plt.xlim(xx1.min(), xx1.max())
     plt.ylim(xx2.min(), xx2.max())
 
-    # plot class examples
+    # クラスの例をプロット
     for idx, cl in enumerate(np.unique(y)):
         plt.scatter(x=X[y == cl, 0], 
                     y=X[y == cl, 1],
@@ -340,7 +340,7 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
                     edgecolor='black')
 
 
-# Training logistic regression classifier using the first 2 principal components.
+# 最初の2つの主成分を使用してロジスティック回帰分類器を訓練。
 
 
 
@@ -382,7 +382,7 @@ X_train_pca = pca.fit_transform(X_train_std)
 pca.explained_variance_ratio_
 
 
-# ## Assessing feature contributions
+# ## 特徴の寄与の評価
 
 
 
@@ -424,20 +424,20 @@ plt.show()
 
 
 
-# # Supervised data compression via linear discriminant analysis
+# # 線形判別分析による教師ありデータ圧縮
 
-# ## Principal component analysis versus linear discriminant analysis
-
-
+# ## 主成分分析と線形判別分析の比較
 
 
 
-# ## The inner workings of linear discriminant analysis
 
 
-# ## Computing the scatter matrices
+# ## 線形判別分析の内部動作
 
-# Calculate the mean vectors for each class:
+
+# ## 散布行列の計算
+
+# 各クラスの平均ベクトルを計算:
 
 
 
@@ -449,24 +449,24 @@ for label in range(1, 4):
     print(f'MV {label}: {mean_vecs[label - 1]}\n')
 
 
-# Compute the within-class scatter matrix:
+# クラス内散布行列を計算:
 
 
 
-d = 13 # number of features
+d = 13 # 特徴数
 S_W = np.zeros((d, d))
 for label, mv in zip(range(1, 4), mean_vecs):
-    class_scatter = np.zeros((d, d))  # scatter matrix for each class
+    class_scatter = np.zeros((d, d))  # 各クラスの散布行列
     for row in X_train_std[y_train == label]:
-        row, mv = row.reshape(d, 1), mv.reshape(d, 1)  # make column vectors
+        row, mv = row.reshape(d, 1), mv.reshape(d, 1)  # 列ベクトルに変換
         class_scatter += (row - mv).dot((row - mv).T)
-    S_W += class_scatter                          # sum class scatter matrices
+    S_W += class_scatter                          # クラス散布行列の和
 
 print('Within-class scatter matrix: '
       f'{S_W.shape[0]}x{S_W.shape[1]}')
 
 
-# Better: covariance matrix since classes are not equally distributed:
+# より良い方法: クラスが等しく分布していないため共分散行列を使用:
 
 
 
@@ -476,7 +476,7 @@ print('Class label distribution:',
 
 
 
-d = 13  # number of features
+d = 13  # 特徴数
 S_W = np.zeros((d, d))
 for label, mv in zip(range(1, 4), mean_vecs):
     class_scatter = np.cov(X_train_std[y_train == label].T)
@@ -486,19 +486,19 @@ print('Scaled within-class scatter matrix: '
       f'{S_W.shape[0]}x{S_W.shape[1]}')
 
 
-# Compute the between-class scatter matrix:
+# クラス間散布行列を計算:
 
 
 
 mean_overall = np.mean(X_train_std, axis=0)
-mean_overall = mean_overall.reshape(d, 1)  # make column vector
+mean_overall = mean_overall.reshape(d, 1)  # 列ベクトルに変換
 
-d = 13  # number of features
+d = 13  # 特徴数
 S_B = np.zeros((d, d))
 
 for i, mean_vec in enumerate(mean_vecs):
     n = X_train_std[y_train == i + 1, :].shape[0]
-    mean_vec = mean_vec.reshape(d, 1)  # make column vector
+    mean_vec = mean_vec.reshape(d, 1)  # 列ベクトルに変換
     S_B += n * (mean_vec - mean_overall).dot((mean_vec - mean_overall).T)
 
 print('Between-class scatter matrix: '
@@ -506,34 +506,33 @@ print('Between-class scatter matrix: '
 
 
 
-# ## Selecting linear discriminants for the new feature subspace
+# ## 新しい特徴部分空間のための線形判別の選択
 
-# Solve the generalized eigenvalue problem for the matrix $S_W^{-1}S_B$:
+# 行列$S_W^{-1}S_B$の一般化固有値問題を解く:
 
 
 
 eigen_vals, eigen_vecs = np.linalg.eig(np.linalg.inv(S_W).dot(S_B))
 
 
-# **Note**:
+# **注意**:
 #     
-# Above, I used the [`numpy.linalg.eig`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eig.html) function to decompose the symmetric covariance matrix into its eigenvalues and eigenvectors.
+# 上記では、対称共分散行列をその固有値と固有ベクトルに分解するために[`numpy.linalg.eig`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eig.html)関数を使用しました。
 #     <pre>>>> eigen_vals, eigen_vecs = np.linalg.eig(cov_mat)</pre>
-#     This is not really a "mistake," but probably suboptimal. It would be better to use [`numpy.linalg.eigh`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html) in such cases, which has been designed for [Hermetian matrices](https://en.wikipedia.org/wiki/Hermitian_matrix). The latter always returns real  eigenvalues; whereas the numerically less stable `np.linalg.eig` can decompose nonsymmetric square matrices, you may find that it returns complex eigenvalues in certain cases. (S.R.)
-# 
+#     これは本当に「間違い」ではありませんが、おそらく最適ではありません。このような場合には[`numpy.linalg.eigh`](http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html)を使用する方が良いでしょう。これは[エルミート行列](https://en.wikipedia.org/wiki/Hermitian_matrix)用に設計されています。後者は常に実固有値を返しますが、数値的に安定性の低い`np.linalg.eig`は非対称正方行列を分解できるため、特定の場合には複素固有値を返すことがあります。(S.R.)
 
-# Sort eigenvectors in descending order of the eigenvalues:
-
+# 固有値の降順で固有ベクトルをソート:
 
 
-# Make a list of (eigenvalue, eigenvector) tuples
+
+# (固有値, 固有ベクトル)のタプルのリストを作成
 eigen_pairs = [(np.abs(eigen_vals[i]), eigen_vecs[:, i])
                for i in range(len(eigen_vals))]
 
-# Sort the (eigenvalue, eigenvector) tuples from high to low
+# (固有値, 固有ベクトル)のタプルを大きいものから小さいものへソート
 eigen_pairs = sorted(eigen_pairs, key=lambda k: k[0], reverse=True)
 
-# Visually confirm that the list is correctly sorted by decreasing eigenvalues
+# リストが固有値の降順で正しくソートされていることを視覚的に確認
 
 print('Eigenvalues in descending order:\n')
 for eigen_val in eigen_pairs:
@@ -566,6 +565,7 @@ w = np.hstack((eigen_pairs[0][1][:, np.newaxis].real,
 print('Matrix W:\n', w)
 
 
+# ## 新しい特徴空間への例の投影
 
 # ## Projecting examples onto the new feature space
 
@@ -589,7 +589,7 @@ plt.show()
 
 
 
-# ## LDA via scikit-learn
+# ## scikit-learnによるLDA
 
 
 
@@ -627,13 +627,13 @@ plt.show()
 
 
 
-# # Nonlinear dimensionality reduction techniques
+# # 非線形次元削減技術
 
 
 
 
 
-# ### Visualizing data via t-distributed stochastic neighbor embedding
+# ### t-分散確率的近傍埋め込みによるデータ可視化
 
 
 
@@ -696,13 +696,13 @@ plt.show()
 
 
 
-# # Summary
+# # まとめ
 
 # ...
 
 # ---
 # 
-# Readers may ignore the next cell.
+# 読者は次のセルを無視してください。
 
 
 
