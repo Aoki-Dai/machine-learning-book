@@ -1,29 +1,28 @@
+# 第6章: モデル評価とハイパーパラメータチューニングのベストプラクティスを学ぶ
 
-##  Chapter 6: Learning Best Practices for Model Evaluation and Hyperparameter Tuning
+## 本章の概要
 
-### Chapter Outline
+- パイプラインによるワークフローの効率化
+  - Breast Cancer Wisconsin データセットの読み込み
+  - パイプラインでトランスフォーマーと推定器を組み合わせる
+- k 分割交差検証によるモデル性能の評価
+  - ホールドアウト法
+  - k 分割交差検証
+- 学習曲線と検証曲線によるアルゴリズムのデバッグ
+  - 学習曲線でバイアスとバリアンスの問題を診断する
+  - 検証曲線で過学習・過小適合に対処する
+- グリッドサーチによる機械学習モデルの微調整
+  - グリッドサーチでハイパーパラメータを調整する
+  - ランダムサーチでより広くハイパーパラメータ構成を探索する
+  - 逐次半減法でより資源効率の高いハイパーパラメータ探索を行う
+  - ネスト化交差検証によるアルゴリズム選択
+- さまざまな性能評価指標を見る
+  - 混同行列の読み方
+  - 分類モデルの適合率（Precision）と再現率（Recall）の最適化
+  - ROC（受信者動作特性）曲線のプロット
+  - 多クラス分類の評価指標
+- クラス不均衡への対処
+- まとめ
 
-- Streamlining workflows with pipelines
-  - Loading the Breast Cancer Wisconsin dataset
-  - Combining transformers and estimators in a pipeline
-- Using k-fold cross-validation to assess model performance
-  - The holdout method
-  - K-fold cross-validation
-- Debugging algorithms with learning and validation curves
-  - Diagnosing bias and variance problems with learning curves
-  - Addressing over- and underfitting with validation curves
-- Fine-tuning machine learning models via grid search
-  - Tuning hyperparameters via grid search
-  - Exploring hyperparameter configurations more widely with randomized search
-  - More resource-efficient hyperparameter search with successive halving
-  - Algorithm selection with nested cross-validation
-- Looking at different performance evaluation metrics
-  - Reading a confusion matrix
-  - Optimizing the precision and recall of a classification model
-  - Plotting a receiver operating characteristic
-  - Scoring metrics for multiclass classification
-- Dealing with class imbalance
-- Summary
-
-**Please refer to the [README.md](../ch01/README.md) file in [`../ch01`](../ch01) for more information about running the code examples.**
+**コード例の実行方法については、[`../ch01`](../ch01) の [README.md](../ch01/README.md) を参照してください。**
 
