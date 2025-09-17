@@ -19,6 +19,7 @@ from sklearn.model_selection import validation_curve
 from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
 from sklearn.model_selection import RandomizedSearchCV
+import scipy.stats
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import HalvingRandomSearchCV
 from sklearn.tree import DecisionTreeClassifier
@@ -30,19 +31,19 @@ from sklearn.metrics import roc_curve, auc
 from numpy import interp
 from sklearn.utils import resample
 
-# # Machine Learning with PyTorch and Scikit-Learn  
-# # -- Code Examples
+# # PyTorch と Scikit-Learn で学ぶ機械学習
+# # -- コード例
 
-# ## Package version checks
+# ## パッケージのバージョン確認
 
-# Add folder to path in order to load from the check_packages.py script:
+# check_packages.py スクリプトを読み込むためにフォルダをパスに追加します:
 
 
 
 sys.path.insert(0, '..')
 
 
-# Check recommended package versions:
+# 推奨パッケージのバージョンを確認します:
 
 
 
@@ -57,44 +58,43 @@ d = {
 check_packages(d)
 
 
-# # Chapter 6 - Learning Best Practices for Model Evaluation and Hyperparameter Tuning
+# # 第6章 - モデル評価とハイパーパラメータチューニングのベストプラクティス
 
 
-# ### Overview
+# ### 概要
 
-# - [Streamlining workflows with pipelines](#Streamlining-workflows-with-pipelines)
-#   - [Loading the Breast Cancer Wisconsin dataset](#Loading-the-Breast-Cancer-Wisconsin-dataset)
-#   - [Combining transformers and estimators in a pipeline](#Combining-transformers-and-estimators-in-a-pipeline)
-# - [Using k-fold cross-validation to assess model performance](#Using-k-fold-cross-validation-to-assess-model-performance)
-#   - [The holdout method](#The-holdout-method)
-#   - [K-fold cross-validation](#K-fold-cross-validation)
-# - [Debugging algorithms with learning and validation curves](#Debugging-algorithms-with-learning-and-validation-curves)
-#   - [Diagnosing bias and variance problems with learning curves](#Diagnosing-bias-and-variance-problems-with-learning-curves)
-#   - [Addressing overfitting and underfitting with validation curves](#Addressing-overfitting-and-underfitting-with-validation-curves)
-# - [Fine-tuning machine learning models via grid search](#Fine-tuning-machine-learning-models-via-grid-search)
-#   - [Tuning hyperparameters via grid search](#Tuning-hyperparameters-via-grid-search)
-#   - [Exploring hyperparameter configurations more widely with randomized search](#Exploring-hyperparameter-configurations-more-widely-with-randomized-search)
-#   - [More resource-efficient hyperparameter search with successive
-# halving](#More-resource-efficient-hyperparameter-search-with-successive-halving)
-#   - [Algorithm selection with nested cross-validation](#Algorithm-selection-with-nested-cross-validation)
-# - [Looking at different performance evaluation metrics](#Looking-at-different-performance-evaluation-metrics)
-#   - [Reading a confusion matrix](#Reading-a-confusion-matrix)
-#   - [Optimizing the precision and recall of a classification model](#Optimizing-the-precision-and-recall-of-a-classification-model)
-#   - [Plotting a receiver operating characteristic](#Plotting-a-receiver-operating-characteristic)
-#   - [The scoring metrics for multiclass classification](#The-scoring-metrics-for-multiclass-classification)
-# - [Dealing with class imbalance](#Dealing-with-class-imbalance)
-# - [Summary](#Summary)
-
-
+# - [パイプラインでワークフローを合理化する](#Streamlining-workflows-with-pipelines)
+#   - [Breast Cancer Wisconsin データセットの読み込み](#Loading-the-Breast-Cancer-Wisconsin-dataset)
+#   - [トランスフォーマと推定器をパイプラインで結合する](#Combining-transformers-and-estimators-in-a-pipeline)
+# - [k 分割交差検証でモデル性能を評価する](#Using-k-fold-cross-validation-to-assess-model-performance)
+#   - [ホールドアウト法](#The-holdout-method)
+#   - [k 分割交差検証](#K-fold-cross-validation)
+# - [学習曲線と検証曲線でアルゴリズムをデバッグする](#Debugging-algorithms-with-learning-and-validation-curves)
+#   - [学習曲線でバイアスとバリアンスを診断する](#Diagnosing-bias-and-variance-problems-with-learning-curves)
+#   - [検証曲線で過学習と学習不足に対処する](#Addressing-overfitting-and-underfitting-with-validation-curves)
+# - [グリッドサーチで機械学習モデルを微調整する](#Fine-tuning-machine-learning-models-via-grid-search)
+#   - [グリッドサーチによるハイパーパラメータの調整](#Tuning-hyperparameters-via-grid-search)
+#   - [ランダムサーチでハイパーパラメータ空間を広く探索する](#Exploring-hyperparameter-configurations-more-widely-with-randomized-search)
+#   - [逐次ハルビングによるより資源効率的なハイパーパラメータ探索](#More-resource-efficient-hyperparameter-search-with-successive-halving)
+#   - [ネスト化交差検証によるアルゴリズム選択](#Algorithm-selection-with-nested-cross-validation)
+# - [さまざまな評価指標を見てみる](#Looking-at-different-performance-evaluation-metrics)
+#   - [混同行列の読み方](#Reading-a-confusion-matrix)
+#   - [分類モデルの適合率と再現率の最適化](#Optimizing-the-precision-and-recall-of-a-classification-model)
+#   - [ROC 曲線のプロット](#Plotting-a-receiver-operating-characteristic)
+#   - [多クラス分類のスコアリング指標](#The-scoring-metrics-for-multiclass-classification)
+# - [クラス不均衡への対処](#Dealing-with-class-imbalance)
+# - [まとめ](#Summary)
 
 
 
 
-# # Streamlining workflows with pipelines
+
+
+# # パイプラインでワークフローを合理化する <a id="Streamlining-workflows-with-pipelines"></a>
 
 # ...
 
-# ## Loading the Breast Cancer Wisconsin dataset
+# ## Breast Cancer Wisconsin データセットの読み込み <a id="Loading-the-Breast-Cancer-Wisconsin-dataset"></a>
 
 
 
@@ -136,14 +136,15 @@ le.transform(['M', 'B'])
 
 
 
-X_train, X_test, y_train, y_test =     train_test_split(X, y, 
+X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, 
                      test_size=0.20,
                      stratify=y,
                      random_state=1)
 
 
 
-# ## Combining transformers and estimators in a pipeline
+# ## トランスフォーマと推定器をパイプラインで結合する <a id="Combining-transformers-and-estimators-in-a-pipeline"></a>
 
 
 
@@ -163,18 +164,18 @@ print(f'Test accuracy: {test_acc:.3f}')
 
 
 
-# # Using k-fold cross validation to assess model performance
+# # k 分割交差検証でモデル性能を評価する <a id="Using-k-fold-cross-validation-to-assess-model-performance"></a>
 
 # ...
 
-# ## The holdout method
+# ## ホールドアウト法 <a id="The-holdout-method"></a>
 
 
 
 
 
 
-# ## K-fold cross-validation
+# ## k 分割交差検証 <a id="K-fold-cross-validation"></a>
 
 
 
@@ -215,10 +216,10 @@ print(f'CV accuracy: {np.mean(scores):.3f} '
 
 
 
-# # Debugging algorithms with learning curves
+# # 学習曲線でアルゴリズムをデバッグする <a id="Debugging-algorithms-with-learning-and-validation-curves"></a>
 
 
-# ## Diagnosing bias and variance problems with learning curves
+# ## 学習曲線でバイアスとバリアンスを診断する <a id="Diagnosing-bias-and-variance-problems-with-learning-curves"></a>
 
 
 
@@ -231,7 +232,8 @@ print(f'CV accuracy: {np.mean(scores):.3f} '
 pipe_lr = make_pipeline(StandardScaler(),
                         LogisticRegression(penalty='l2', max_iter=10000))
 
-train_sizes, train_scores, test_scores =                learning_curve(estimator=pipe_lr,
+train_sizes, train_scores, test_scores =\
+                learning_curve(estimator=pipe_lr,
                                X=X_train,
                                y=y_train,
                                train_sizes=np.linspace(0.1, 1.0, 10),
@@ -273,7 +275,7 @@ plt.show()
 
 
 
-# ## Addressing over- and underfitting with validation curves
+# ## 検証曲線で過学習と学習不足に対処する <a id="Addressing-overfitting-and-underfitting-with-validation-curves"></a>
 
 
 
@@ -323,10 +325,10 @@ plt.show()
 
 
 
-# # Fine-tuning machine learning models via grid search
+# # グリッドサーチで機械学習モデルを微調整する <a id="Fine-tuning-machine-learning-models-via-grid-search"></a>
 
 
-# ## Tuning hyperparameters via grid search 
+# ## グリッドサーチによるハイパーパラメータの調整 <a id="Tuning-hyperparameters-via-grid-search"></a>
 
 
 
@@ -375,7 +377,7 @@ param_grid = [{'svc__C': param_range,
                'svc__kernel': ['linear']},
               {'svc__C': param_range,
                'svc__gamma': param_range,
-               'svc__kernel': ['rbg']}]
+               'svc__kernel': ['rbf']}]
 
 
 rs = RandomizedSearchCV(estimator=pipe_svc,
@@ -399,7 +401,9 @@ print(rs.best_score_)
 print(rs.best_params_)
 
 
-# ## Exploring hyperparameter configurations more widely with randomized search
+# ## ランダムサーチでハイパーパラメータ空間を広く探索する <a id="Exploring-hyperparameter-configurations-more-widely-with-randomized-search"></a>
+
+
 
 
 
@@ -416,7 +420,7 @@ np.random.seed(1)
 param_range.rvs(10)
 
 
-# ## More resource-efficient hyperparameter search with successive halving
+# ## 逐次ハルビングによるより資源効率的なハイパーパラメータ探索 <a id="More-resource-efficient-hyperparameter-search-with-successive-halving"></a>
 
 
 
@@ -448,7 +452,7 @@ print(f'Test accuracy: {hs.score(X_test, y_test):.3f}')
 
 
 
-# ## Algorithm selection with nested cross-validation
+# ## ネスト化交差検証によるアルゴリズム選択 <a id="Algorithm-selection-with-nested-cross-validation"></a>
 
 
 
@@ -482,11 +486,11 @@ print(f'CV accuracy: {np.mean(scores):.3f} '
 
 
 
-# # Looking at different performance evaluation metrics
+# # さまざまな性能評価指標を見てみる <a id="Looking-at-different-performance-evaluation-metrics"></a>
 
 # ...
 
-# ## Reading a confusion matrix
+# ## 混同行列の読み方 <a id="Reading-a-confusion-matrix"></a>
 
 
 
@@ -518,9 +522,9 @@ plt.tight_layout()
 plt.show()
 
 
-# ### Additional Note
+# ### 補足
 
-# Remember that we previously encoded the class labels so that *malignant* examples are the "postive" class (1), and *benign* examples are the "negative" class (0):
+# 先ほどクラスラベルをエンコードし、悪性（malignant）を「陽性」クラス（1）、良性（benign）を「陰性」クラス（0）に設定したことを思い出してください:
 
 
 
@@ -533,7 +537,7 @@ confmat = confusion_matrix(y_true=y_test, y_pred=y_pred)
 print(confmat)
 
 
-# Next, we printed the confusion matrix like so:
+# 次に、混同行列を以下のように表示しました:
 
 
 
@@ -541,7 +545,7 @@ confmat = confusion_matrix(y_true=y_test, y_pred=y_pred)
 print(confmat)
 
 
-# Note that the (true) class 0 examples that are correctly predicted as class 0 (true negatives) are now in the upper left corner of the matrix (index 0, 0). In order to change the ordering so that the true negatives are in the lower right corner (index 1,1) and the true positves are in the upper left, we can use the `labels` argument like shown below:
+# 注意: クラス0（真のラベル0）を正しくクラス0と予測したもの（真陰性）は、行列の左上（インデックス 0,0）にあります。真陰性を右下（インデックス 1,1）、真陽性を左上にしたい場合は、以下のように `labels` 引数で順序を変更できます:
 
 
 
@@ -549,12 +553,12 @@ confmat = confusion_matrix(y_true=y_test, y_pred=y_pred, labels=[1, 0])
 print(confmat)
 
 
-# We conclude:
+# 結論:
 # 
-# Assuming that class 1 (malignant) is the positive class in this example, our model correctly classified 71 of the examples that belong to class 0 (true negatives) and 40 examples that belong to class 1 (true positives), respectively. However, our model also incorrectly misclassified 1 example from class 0 as class 1 (false positive), and it predicted that 2 examples are benign although it is a malignant tumor (false negatives).
+# > この例ではクラス1（悪性）を陽性クラスとすると、モデルはクラス0に属するサンプルを71件（真陰性）、クラス1に属するサンプルを40件（真陽性）正しく分類しました。一方で、クラス0のサンプルを1件クラス1と誤分類（偽陽性）し、悪性であるにもかかわらず2件を良性と予測しました（偽陰性）。
 
 
-# ## Optimizing the precision and recall of a classification model
+# ## 分類モデルの適合率と再現率の最適化 <a id="Optimizing-the-precision-and-recall-of-a-classification-model"></a>
 
 
 
@@ -596,7 +600,7 @@ print(gs.best_params_)
 
 
 
-# ## Plotting a receiver operating characteristic
+# ## ROC 曲線のプロット <a id="Plotting-a-receiver-operating-characteristic"></a>
 
 
 
@@ -663,7 +667,7 @@ plt.show()
 
 
 
-# ## The scoring metrics for multiclass classification
+# ## 多クラス分類のスコアリング指標 <a id="The-scoring-metrics-for-multiclass-classification"></a>
 
 
 
@@ -673,7 +677,7 @@ pre_scorer = make_scorer(score_func=precision_score,
                          average='micro')
 
 
-# ## Dealing with class imbalance
+# ## クラス不均衡への対処 <a id="Dealing-with-class-imbalance"></a>
 
 
 
@@ -714,13 +718,13 @@ np.mean(y_pred == y_bal) * 100
 
 
 
-# # Summary
+# # まとめ <a id="Summary"></a>
 
 # ...
 
 # ---
 # 
-# Readers may ignore the next cell.
+# この次のセルは読者は無視して構いません。
 
 
 
